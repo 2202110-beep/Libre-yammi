@@ -16,7 +16,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&display=swap');
         
-        body { margin: 0; overflow: hidden; background-color: #f2e8cf; }
+        body { margin: 0; overflow-y: scroll; background-color: #f2e8cf; }
         .font-handwriting { font-family: 'Indie Flower', cursive; }
         
         /* Efectos 3D mejorados para libro realista */
@@ -1122,98 +1122,26 @@
           }
 
           return (
-            <div className={`min-h-screen ${darkMode ? 'dark-mode' : 'bg-[#f2e8cf]'} flex flex-col items-center justify-center p-2 sm:p-4 font-sans overflow-hidden custom-cursor transition-colors duration-500`}>
+            <div className={`min-h-screen ${darkMode ? 'dark-mode' : 'bg-[#f2e8cf]'} w-full transition-colors duration-500`}>
               <FloatingHearts />
               
-              <div className="relative z-10 w-full h-[calc(100vh-32px)] sm:h-[calc(100vh-64px)] max-h-[600px] flex items-center justify-center perspective-1500">
-                {/* Sombra del libro sobre la mesa */}
-                <div className="hidden sm:block absolute bottom-0 w-[300px] sm:w-[400px] h-[30px] sm:h-[40px] bg-black/10 blur-2xl rounded-full transform translate-y-16"></div>
-                {/* Sombra de manos */}
-                <div className="book-hands"></div>
-                
-                <div className={`relative w-full max-w-sm sm:max-w-md lg:max-w-lg h-full aspect-video max-h-[500px] sm:max-h-[550px] transform-style-3d transition-all duration-700 ease-out`}>
-                  {/* Página izquierda (anterior) */}
-                  {currentPage > 0 && pages[currentPage - 1] && (
-                    <div 
-                      className="absolute inset-0 w-1/2 h-full -left-1/2 bg-white rounded-l-lg border-r-4 border-amber-900/20 paper-texture shadow-lg"
-                      style={{
-                        zIndex: totalPages,
-                        boxShadow: '5px 0 15px rgba(0,0,0,0.15), inset -2px 0 5px rgba(0,0,0,0.05)'
-                      }}>
-                      <div className="w-full h-full overflow-hidden">
-                        <LeftPhotoPage pageIndex={currentPage - 1} photoSrc={photoSources[currentPage - 1]} />
-                        <div className="absolute bottom-3 left-4 text-gray-400 text-sm font-handwriting">
-                          {currentPage - 1}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Página derecha (actual) */}
-                  {pages.map((page, index) => {
-                    const zIndex = totalPages - index;
-                    const isFlipped = index < currentPage;
-                    const isCurrent = index === currentPage;
-                    if (index < currentPage - 1 || (currentPage > 0 && index < currentPage)) return null;
-                    return (
-                      <div 
-                        key={index} 
-                        onClick={() => isCurrent && turnPage('next')}
-                        className={`absolute inset-0 w-1/2 h-full right-0 origin-left transition-all duration-800 transform-style-3d bg-white rounded-r-lg border-l-4 border-amber-900/20 paper-texture cursor-pointer
-                          ${isFlipped ? 'rotate-y-180 page-shadow-flipped' : 'rotate-y-0 page-shadow-active'}
-                          ${isCurrent ? 'shadow-2xl' : ''}`}
-                        style={{ 
-                          zIndex: isFlipped ? index : zIndex,
-                          transitionTimingFunction: 'cubic-bezier(0.645, 0.045, 0.355, 1.000)',
-                          boxShadow: isFlipped 
-                            ? '2px 0 8px rgba(0,0,0,0.1), inset -5px 0 15px rgba(0,0,0,0.05)'
-                            : isCurrent
-                            ? '-15px 0 30px rgba(0,0,0,0.2), -25px 0 50px rgba(0,0,0,0.1), inset 8px 0 15px rgba(0,0,0,0.03)'
-                            : '-10px 0 20px rgba(0,0,0,0.15), inset 5px 0 10px rgba(0,0,0,0.02)'
-                        }}>
-                        {page.component}
-                        <div className="absolute bottom-3 right-4 text-gray-400 text-sm font-handwriting flex items-center gap-1">
-                          {index > 0 && <span>{index}</span>}
-                          {index > 0 && <span className="text-[10px]">❤️</span>}
-                        </div>
-                      </div>
-                    );
-                  })}
-                  {/* Páginas del libro acumuladas (efecto de grosor) */}
-                  <div className="absolute inset-0 w-full h-full bg-amber-50 rounded-r-lg -z-10 shadow-2xl transform translate-x-1 translate-y-1 border-r-2 border-amber-900/10"></div>
-                  <div className="absolute inset-0 w-full h-full bg-amber-100 rounded-r-lg -z-20 shadow-2xl transform translate-x-2 translate-y-2 border-r-2 border-amber-900/10"></div>
-                  <div className="absolute inset-0 w-full h-full bg-amber-200 rounded-r-lg -z-30 shadow-2xl transform translate-x-3 translate-y-3 border-r-2 border-amber-900/10"></div>
-                </div>
-              </div>
+              {/* Contenedor de scroll vertical */}
+              <div className="w-full">
+                {/* Portada */}
+                <section className="min-h-screen w-full flex items-center justify-center p-4">
+                  <div className="w-full max-w-2xl">
+                    <CoverPage onOpen={() => {}} />
+                  </div>
+                </section>
 
-              <div className="mt-4 sm:mt-8 z-20 flex gap-4 sm:gap-8 items-center bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-full shadow-xl border-2 border-rose-100">
-                <button 
-                  onClick={() => turnPage('prev')} 
-                  disabled={currentPage === 0} 
-                  className={`p-2 sm:p-3 rounded-full transition-all duration-200 touch-manipulation ${
-                    currentPage === 0 
-                      ? 'text-gray-300 cursor-not-allowed bg-gray-50' 
-                      : 'bg-gradient-to-br from-rose-100 to-pink-100 text-rose-600 hover:from-rose-200 hover:to-pink-200 hover:scale-110 hover:shadow-lg active:scale-95 active:shadow-sm'
-                  }`}
-                  style={{ willChange: 'transform' }}
-                >
-                  <Icons.ArrowRight size={28} className="transform rotate-180" />
-                </button>
-                <div className="text-gray-600 text-sm sm:text-base font-handwriting font-bold w-16 sm:w-20 text-center">
-                  {currentPage === 0 ? 'Inicio' : `Pág ${currentPage}`}
-                </div>
-                <button 
-                  onClick={() => turnPage('next')} 
-                  disabled={currentPage === totalPages - 1} 
-                  className={`p-2 sm:p-3 rounded-full transition-all duration-200 touch-manipulation ${
-                    currentPage === totalPages - 1 
-                      ? 'text-gray-300 cursor-not-allowed bg-gray-50' 
-                      : 'bg-gradient-to-br from-rose-100 to-pink-100 text-rose-600 hover:from-rose-200 hover:to-pink-200 hover:scale-110 hover:shadow-lg active:scale-95 active:shadow-sm'
-                  }`}
-                  style={{ willChange: 'transform' }}
-                >
-                  <Icons.ArrowRight size={28} />
-                </button>
+                {/* Todas las páginas de contenido */}
+                {pages.map((page, index) => (
+                  <section key={index} className="min-h-screen w-full flex items-center justify-center p-4 py-12">
+                    <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6">
+                      {page.component}
+                    </div>
+                  </section>
+                ))}
               </div>
             </div>
           );
