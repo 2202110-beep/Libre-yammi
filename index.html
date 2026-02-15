@@ -1131,16 +1131,35 @@
                 {/* Sombra de manos */}
                 <div className="book-hands"></div>
                 
-                <div className={`relative w-full max-w-sm sm:max-w-md lg:max-w-lg h-full aspect-video max-h-[500px] sm:max-h-[550px] transform-style-3d transition-all duration-700 ease-out ${currentPage > 0 ? 'translate-x-[8%] sm:translate-x-[12%]' : ''}`}>
+                <div className={`relative w-full max-w-sm sm:max-w-md lg:max-w-lg h-full aspect-video max-h-[500px] sm:max-h-[550px] transform-style-3d transition-all duration-700 ease-out`}>
+                  {/* Página izquierda (anterior) */}
+                  {currentPage > 0 && pages[currentPage - 1] && (
+                    <div 
+                      className="absolute inset-0 w-1/2 h-full -left-1/2 bg-white rounded-l-lg border-r-4 border-amber-900/20 paper-texture shadow-lg"
+                      style={{
+                        zIndex: totalPages,
+                        boxShadow: '5px 0 15px rgba(0,0,0,0.15), inset -2px 0 5px rgba(0,0,0,0.05)'
+                      }}>
+                      <div className="w-full h-full overflow-hidden">
+                        <LeftPhotoPage pageIndex={currentPage - 1} photoSrc={photoSources[currentPage - 1]} />
+                        <div className="absolute bottom-3 left-4 text-gray-400 text-sm font-handwriting">
+                          {currentPage - 1}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Página derecha (actual) */}
                   {pages.map((page, index) => {
                     const zIndex = totalPages - index;
                     const isFlipped = index < currentPage;
                     const isCurrent = index === currentPage;
+                    if (index < currentPage - 1 || (currentPage > 0 && index < currentPage)) return null;
                     return (
                       <div 
                         key={index} 
                         onClick={() => isCurrent && turnPage('next')}
-                        className={`absolute inset-0 w-full h-full origin-left transition-all duration-800 transform-style-3d bg-white rounded-r-lg border-l-4 border-amber-900/20 paper-texture cursor-pointer
+                        className={`absolute inset-0 w-1/2 h-full right-0 origin-left transition-all duration-800 transform-style-3d bg-white rounded-r-lg border-l-4 border-amber-900/20 paper-texture cursor-pointer
                           ${isFlipped ? 'rotate-y-180 page-shadow-flipped' : 'rotate-y-0 page-shadow-active'}
                           ${isCurrent ? 'shadow-2xl' : ''}`}
                         style={{ 
@@ -1152,30 +1171,11 @@
                             ? '-15px 0 30px rgba(0,0,0,0.2), -25px 0 50px rgba(0,0,0,0.1), inset 8px 0 15px rgba(0,0,0,0.03)'
                             : '-10px 0 20px rgba(0,0,0,0.15), inset 5px 0 10px rgba(0,0,0,0.02)'
                         }}>
-                        {/* Frente de la página */}
-                        <div className="absolute inset-0 w-full h-full backface-hidden rounded-r-lg overflow-hidden bg-white">
-                          {page.component}
-                          {/* Efecto de borde interno */}
-                          <div className="absolute inset-0 pointer-events-none rounded-r-lg" style={{
-                            boxShadow: 'inset -1px 0 2px rgba(0,0,0,0.1), inset 1px 0 2px rgba(255,255,255,0.5)'
-                          }}></div>
-                          <div className="absolute bottom-3 right-4 text-gray-400 text-sm font-handwriting flex items-center gap-1">
-                             {index > 0 && <span>{index}</span>}
-                             {index > 0 && <span className="text-[10px]">❤️</span>}
-                          </div>
+                        {page.component}
+                        <div className="absolute bottom-3 right-4 text-gray-400 text-sm font-handwriting flex items-center gap-1">
+                          {index > 0 && <span>{index}</span>}
+                          {index > 0 && <span className="text-[10px]">❤️</span>}
                         </div>
-                        {/* Reverso de la página */}
-                        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-l-lg overflow-hidden">
-                            <LeftPhotoPage pageIndex={index} photoSrc={photoSources[index]} />
-                            {/* Efecto de borde interno para el reverso */}
-                            <div className="absolute inset-0 pointer-events-none rounded-l-lg" style={{
-                              boxShadow: 'inset 1px 0 2px rgba(0,0,0,0.1), inset -1px 0 2px rgba(255,255,255,0.5)'
-                            }}></div>
-                        </div>
-                        {/* Lomo/borde de la página simulando grosor */}
-                        <div className="absolute left-0 top-0 bottom-0 w-[6px] book-spine transform -translate-x-full rounded-l-sm" style={{
-                          boxShadow: '-2px 0 4px rgba(0,0,0,0.3)'
-                        }}></div>
                       </div>
                     );
                   })}
