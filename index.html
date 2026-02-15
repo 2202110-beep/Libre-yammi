@@ -1714,6 +1714,34 @@
                     </React.Fragment>
                   );
                 })}
+                
+                {/* Sección final - Mensaje grande */}
+                <section className="min-h-screen w-full flex items-center justify-center p-4 bg-gradient-to-b from-red-50 to-pink-100">
+                  <ScrollSection delay={pages.length * 100}>
+                    <div className="w-full max-w-2xl text-center">
+                      <div className="space-y-8">
+                        <div className="text-9xl animate-bounce-custom" style={{animationDelay: '0s'}}>💖</div>
+                        <h1 className="text-6xl md:text-7xl font-handwriting text-red-600 font-bold leading-tight">
+                          Te quiero
+                        </h1>
+                        <h2 className="text-5xl md:text-6xl font-handwriting text-red-500 font-bold">
+                          Muchos
+                        </h2>
+                        <h2 className="text-5xl md:text-6xl font-handwriting text-red-500 font-bold">
+                          muchos
+                        </h2>
+                        <h2 className="text-5xl md:text-6xl font-handwriting text-pink-600 font-bold">
+                          Yammi 💕
+                        </h2>
+                        <div className="pt-12 flex justify-center gap-4">
+                          <div className="text-5xl animate-bounce-custom" style={{animationDelay: '0.2s'}}>💕</div>
+                          <div className="text-5xl animate-bounce-custom" style={{animationDelay: '0.4s'}}>❤️</div>
+                          <div className="text-5xl animate-bounce-custom" style={{animationDelay: '0.6s'}}>💗</div>
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollSection>
+                </section>
               </div>
             </div>
           );
