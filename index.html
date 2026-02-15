@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti, Yammi ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel para JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Estilos personalizados -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&display=swap');
+        
+        body { margin: 0; overflow: hidden; background-color: #f2e8cf; }
+        .font-handwriting { font-family: 'Indie Flower', cursive; }
+        
+        /* Efectos 3D mejorados para libro realista */
+        .perspective-1500 { perspective: 2000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(-180deg); }
+        .origin-left { transform-origin: left center; }
+        
+        /* Animación de página volteando */
+        .page-turning {
+          animation: pageTurn 0.8s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+        }
+        
+        @keyframes pageTurn {
+          0% { 
+            transform: rotateY(0deg);
+            box-shadow: -15px 0 30px rgba(0,0,0,0.2);
+          }
+          50% { 
+            transform: rotateY(-90deg);
+            box-shadow: -5px 0 50px rgba(0,0,0,0.4);
+          }
+          100% { 
+            transform: rotateY(-180deg);
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+          }
+        }
+        
+        /* Sombras dinámicas para páginas */
+        .page-shadow-active {
+          box-shadow: 
+            -10px 0 20px rgba(0,0,0,0.15),
+            -20px 0 40px rgba(0,0,0,0.1),
+            inset 5px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .page-shadow-flipped {
+          box-shadow: 
+            2px 0 5px rgba(0,0,0,0.1),
+            inset -5px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        /* Efecto de grosor del libro */
+        .book-spine {
+          background: linear-gradient(to right, 
+            rgba(139, 69, 19, 0.8) 0%, 
+            rgba(160, 82, 45, 0.6) 50%, 
+            rgba(139, 69, 19, 0.8) 100%);
+        }
+        
+        /* Animaciones */
+        .animate-spin-slow { animation: spin 8s linear infinite; }
+        .animate-bounce-slow { animation: bounce 3s infinite; }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        @keyframes float {
+          0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+          50% { opacity: 0.6; }
+          100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        .animate-float {
+          animation-name: float;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+        }
+
+        /* Scrollbar personalizado */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #fecdd3; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #fb7185; }
+
+        /* Portada: suaviza escalado de imagen y evita pixelado duro */
+        .cover-image {
+          image-rendering: auto;
+          -ms-interpolation-mode: bicubic;
+          transform: translateZ(0);
+          filter: contrast(1.04) saturate(1.05);
+        }
+        
+        /* Efecto de textura de papel */
+        .paper-texture {
+          background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cfilter id="noise"%3E%3CfeTurbulance baseFrequency="0.9" numOctaves="4" /%3E%3C/filter%3E%3Crect width="100" height="100" filter="url(%23noise)" opacity="0.03" /%3E%3C/svg%3E');
+        }
+        
+        /* Cursor personalizado */
+        .custom-cursor {
+          cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ec4899" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') 12 12, auto;
+        }
+        
+        /* Animación de partículas */
+        @keyframes sparkle {
+          0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+          50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+        
+        .sparkle-particle {
+          animation: sparkle 0.8s ease-out forwards;
+        }
+        
+        /* Animación de carga */
+        @keyframes fadeInScale {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        
+        .fade-in-scale {
+          animation: fadeInScale 0.6s ease-out;
+        }
+        
+        /* Modo oscuro */
+        .dark-mode {
+          background-color: #1a1a2e;
+          color: #eee;
+        }
+        
+        .dark-mode .bg-white {
+          background-color: #16213e !important;
+        }
+        
+        .dark-mode .text-gray-700,
+        .dark-mode .text-gray-600,
+        .dark-mode .text-gray-500 {
+          color: #ddd !important;
+        }
+        
+        /* Sombra de manos */
+        .book-hands {
+          position: absolute;
+          bottom: -40px;
+          width: 120%;
+          height: 60px;
+          background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, transparent 70%);
+          filter: blur(10px);
+        }
+        
+        /* Parallax */
+        .parallax-slow { transform: translateZ(-20px) scale(1.2); }
+        .parallax-medium { transform: translateZ(-10px) scale(1.1); }
+        
+        /* Easter egg pulse */
+        @keyframes secretPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7); }
+          50% { box-shadow: 0 0 0 10px rgba(236, 72, 153, 0); }
+        }
+        
+        .secret-active {
+          animation: secretPulse 1.5s infinite;
+        }
+        
+        /* Confeti */
+        @keyframes confetti-fall {
+          to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        .confetti {
+          animation: confetti-fall 3s linear forwards;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- ICONOS (Reemplazo de Lucide-React para HTML simple) ---
+        const IconBase = ({ d, className, ...props }) => (
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" height="24" viewBox="0 0 24 24" 
+                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" 
+                className={className} {...props}
+            >
+                {d.map((path, i) => <path key={i} d={path} />)}
+            </svg>
+        );
+
+        const Icons = {
+            Heart: (props) => <IconBase {...props} className={props.className} fill={props.fill || "none"} d={["M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"]} />,
+            Music: (props) => <IconBase {...props} d={["M9 18V5l12-2v13", "M6 18a3 3 0 1 0 6 0 3 3 0 1 0-6 0", "M18 16a3 3 0 1 0 6 0 3 3 0 1 0-6 0"]} />,
+            Calendar: (props) => <IconBase {...props} d={["M8 2v4", "M16 2v4", "M3 10h18", "M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"]} />,
+            Star: (props) => <IconBase {...props} fill={props.fill || "none"} d={["M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"]} />,
+            ArrowRight: (props) => <IconBase {...props} d={["M5 12h14", "M12 5l7 7-7 7"]} />,
+            Gift: (props) => <IconBase {...props} d={["M20 12v10H4V12", "M2 7h20v5H2z", "M12 22V7", "M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z", "M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"]} />,
+            Clock: (props) => <IconBase {...props} d={["M12 6v6l4 2", "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"]} />,
+            MapPin: (props) => <IconBase {...props} d={["M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z", "M12 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"]} />,
+            Smile: (props) => <IconBase {...props} d={["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z", "M8 14s1.5 2 4 2 4-2 4-2", "M9 9h.01", "M15 9h.01"]} />,
+            Lock: (props) => <IconBase {...props} d={["M16 11V7a4 4 0 0 0-8 0v4", "M5 11h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2Z"]} />,
+            Unlock: (props) => <IconBase {...props} d={["M16 11V7a4 4 0 0 0-8 0v4", "M5 11h14a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2Z", "M7 11V7"]} />, // Ajustado visualmente
+            CheckCircle: (props) => <IconBase {...props} d={["M22 11.08V12a10 10 0 1 1-5.93-9.14", "M22 4 12 14.01l-3-3"]} />,
+            PenTool: (props) => <IconBase {...props} d={["M12 19l7-7 3 3-7 7-3-3z", "M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z", "M2 2l7.586 7.586", "M11 11l-4 4"]} />, // Simplificado
+            Sparkles: (props) => <IconBase {...props} d={["M21 12a9 9 0 1 1-6.219-8.56", "M12 3v18", "M3 12h18"]} />, // Estrella genérica
+        };
+
+        // --- COMPONENTES VISUALES (DOODLES) ---
+        const Doodle = ({ type, className, color = "text-gray-400" }) => {
+            const paths = {
+                star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+                spiral: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.5-2.5 2.5-4.5 5.5-4.5 3.5 0 5 3 4 5.5 0 2-1.5 3.5-3.5 4-1 .25-2 1-2.5 2.5",
+                arrow: "M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z",
+                underline: "M2 18c3-2 8-2 12 1s10-2 8 1",
+                heart: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            };
+
+            return (
+                <svg viewBox="0 0 24 24" fill={type === 'heart' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`${className} ${color} opacity-70`}>
+                    <path d={paths[type] || paths.star} />
+                </svg>
+            );
+        };
+
+        // --- PÁGINAS DEL LIBRO ---
+
+        const CoverPage = ({ onOpen }) => {
+            const [secretRevealed, setSecretRevealed] = useState(false);
+            const [secretMessage, setSecretMessage] = useState('');
+            
+            const handleDoubleClick = () => {
+                setSecretRevealed(true);
+                setSecretMessage('💕 Eres mi persona favorita en todo el universo 💕');
+                setTimeout(() => setSecretRevealed(false), 4000);
+            };
+            
+            return (
+                <div className="h-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 to-rose-200 border-4 border-pink-300 rounded-r-lg shadow-inner p-8 text-center relative overflow-hidden">
+                  <div className="absolute top-8 left-8 transform -rotate-12 parallax-slow text-rose-400 text-3xl">❤️</div>
+                  <div className="absolute top-20 right-12 transform rotate-6 parallax-slow text-rose-300 text-xl">💗</div>
+                  <div className="absolute bottom-14 left-14 transform rotate-12 parallax-slow text-rose-400 text-2xl">💖</div>
+                  <div className="absolute bottom-8 right-10 transform -rotate-6 parallax-slow text-rose-500 text-4xl">💕</div>
+                  <div className="absolute top-1/2 left-6 transform -rotate-3 parallax-slow text-rose-300 text-lg">💘</div>
+                    
+                    {/* Easter Egg: Mensaje secreto */}
+                    {secretRevealed && (
+                        <div className="absolute top-4 left-0 right-0 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-4 py-2 rounded-lg shadow-xl z-50 mx-4 text-sm font-handwriting font-bold animate-bounce">
+                            {secretMessage}
+                        </div>
+                    )}
+                    
+                    <div 
+                        className="mb-6 relative group cursor-pointer"
+                        onDoubleClick={handleDoubleClick}
+                        title="Pss... haz doble clic aquí 👀"
+                    >
+                        <div className={`absolute inset-0 bg-rose-400 rounded-full blur opacity-40 group-hover:opacity-60 transition-opacity ${secretRevealed ? 'secret-active' : ''}`}></div>
+                        <div className="w-28 h-28 rounded-full border-4 border-white shadow-xl overflow-hidden bg-white relative z-10 mx-auto flex items-center justify-center">
+                            <img 
+                                src="recuerdos/animada.jpeg" 
+                                alt="Para Yammi" 
+                                className="w-full h-full object-cover cover-image"
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = 'https://ui-avatars.com/api/?name=Yammi&background=ec4899&color=fff&size=200';
+                                }}
+                            />
+                        </div>
+                        <div className="absolute -bottom-2 -right-2 bg-white p-2 rounded-full shadow-lg z-20 animate-bounce">
+                            <Icons.Heart className="w-6 h-6 text-rose-500" fill="currentColor" />
+                        </div>
+                    </div>
+
+                    <h1 className="text-5xl font-handwriting text-rose-800 mb-2 font-bold drop-shadow-sm">Para Ti, Yammi</h1>
+                    <div className="w-32 h-1 bg-rose-400 rounded-full mb-4 mx-auto"></div>
+                    <p className="text-rose-600 font-handwriting text-xl mb-8">Nuestra historia, escrita con amor...</p>
+                    
+                    <button onClick={onOpen} className="bg-white text-rose-500 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-rose-50 transition-transform hover:scale-105 flex items-center gap-2 group mx-auto">
+                        Abrir <Icons.ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </button>
+                </div>
+            );
+        };
+
+          const LeftPhotoPage = ({ pageIndex, photoSrc }) => (
+            <div className="h-full w-full bg-[#f8f5f2] rounded-l-lg shadow-inner border-r border-gray-200 flex flex-col items-center justify-center p-6 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                
+                <div className="bg-white p-4 pb-12 shadow-md transform -rotate-2 hover:rotate-0 transition-transform duration-500 w-full max-w-[280px] border border-gray-200 relative">
+                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-24 h-6 bg-rose-200/60 rotate-1 shadow-sm z-10"></div>
+                     <div className="w-full h-64 bg-gray-100 overflow-hidden relative group">
+                         <img 
+                       src={photoSrc || "yoyyami.png"} 
+                       alt={`Recuerdo ${pageIndex}`}
+                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                       onError={(e) => {
+                         e.target.onerror = null;
+                         e.target.src = `https://picsum.photos/seed/recuerdo-${pageIndex + 1}/400/500`;
+                       }}
+                     />
+                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 text-white font-handwriting text-xl">
+                            <Icons.Heart fill="white" />
+                         </div>
+                     </div>
+                     <div className="absolute bottom-4 left-0 w-full text-center">
+                        <span className="font-handwriting text-gray-500 text-lg">Recuerdo #{pageIndex}</span>
+                     </div>
+                </div>
+                
+                <div className="absolute bottom-6 left-6 opacity-30">
+                    <Doodle type="heart" className="w-8 h-8 text-rose-400" />
+                </div>
+            </div>
+        );
+
+        const ReasonsWhyYouPage = () => {
+            const reasons = [
+                "Porque quiero estar contigo.",
+                "Porque cada vez que recuerdo cómo pasó se me mueve todo.",
+                "Porque eres tan única que me encantas.",
+                "Porque me encanta lo ñoña que puedes llegar a ser.",
+                "Porque me gusta cuando me dices \"mi amor\".",
+                "Porque aún no tenemos 2 hijos y un perrito.",
+                "Porque me gustan tus abrazos fuertes.",
+                "Porque hemos vivido y superado demasiado.",
+                "Porque eres mi primera vez en mucho.",
+                "Porque has intentado estar lista por mí.",
+                "Porque eres tan linda cuando se te sale tu niña chiquita interior.",
+                "Porque aunque no ha sido fácil no nos hemos estancado.",
+                "Porque me gusta cuando tomas mi mano para ponerla en tu pierna.",
+                "Porque me gusta parecer garrapata contigo.",
+                "Porque me gusta mucho tu cintura.",
+                "Porque nos falta muchas cosas por hacer.",
+                "Porque aún no te he cocinado algo.",
+                "Porque eres muy importante para mí.",
+                "Porque soy feliz contigo."
+            ];
+
+            return (
+                <div className="h-full bg-gradient-to-br from-rose-50 to-pink-50 p-6 flex flex-col relative overflow-hidden">
+                    <div className="absolute top-0 right-0 text-9xl opacity-5 transform rotate-12">
+                        💖
+                    </div>
+                    
+                    <h2 className="text-2xl font-handwriting text-rose-700 mb-4 text-center font-bold z-10">
+                        Por qué quiero estar contigo
+                    </h2>
+                    
+                    <div className="flex-1 bg-white rounded-lg shadow-md p-4 overflow-y-auto custom-scrollbar z-10">
+                        <ul className="space-y-2">
+                            {reasons.map((item, idx) => (
+                                <li 
+                                    key={idx} 
+                                    className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-rose-50 to-transparent hover:from-rose-100 transition-all transform hover:scale-102 hover:shadow-sm"
+                                >
+                                    <span className="text-rose-400 font-bold text-xl min-w-[28px]">💖</span>
+                                    <span className="font-handwriting text-gray-700 text-sm leading-relaxed flex-1">{item}</span>
+                                </li>
+                            ))}
+                            <li className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-rose-100 to-rose-50 border-2 border-rose-300 shadow-lg mt-4">
+                                <span className="text-rose-500 font-bold text-2xl min-w-[28px]">💖</span>
+                                <span className="font-handwriting text-rose-800 text-base leading-relaxed flex-1 font-bold">
+                                    Porque quiero que seas tú, quiero estar contigo no por costumbre, sino porque todo lo que hemos vivido es muy único, quiero poder ser esa persona a la cual puedes correr y poder estar siempre contigo y para ti.
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div className="text-center mt-3 text-xs text-rose-400 font-handwriting opacity-80 z-10">
+                        ❤️ Hay tantas razones más...
+                    </div>
+                </div>
+            );
+        };
+
+        const ThingsToDoTogetherPage = () => {
+            const initialItems = [
+                "Coito.",
+                "Un picnic.",
+                "Hacer un pastel.",
+                "Ir a un tianguis.",
+                "Comprar algo igual.",
+                "Ir a misa solo por churros.",
+                "Un día de películas.",
+                "Armar un rompecabezas.",
+                "Pintar figuritas de yeso.",
+                "Ir a un restaurante muy muy caro.",
+                "Ir a un lugar fuera de GDL.",
+                "Acampar.",
+                "Un paseo en bici.",
+                "Jugar un videojuego.",
+                "Tarde de juegos de mesa.",
+                "Una tarjeta de navidad.",
+                "Hacer brownies.",
+                "Fumar mota.",
+                "Conocer muchos lugares.",
+                "Patinar en hielo."
+            ];
+
+            const [items, setItems] = React.useState(() => {
+                const saved = localStorage.getItem('thingsToDoTogether');
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+                return initialItems.map(text => ({ text, completed: false }));
+            });
+
+            const [newItem, setNewItem] = React.useState('');
+
+            React.useEffect(() => {
+                localStorage.setItem('thingsToDoTogether', JSON.stringify(items));
+            }, [items]);
+
+            const toggleItem = (index) => {
+                setItems(items.map((item, i) => 
+                    i === index ? { ...item, completed: !item.completed } : item
+                ));
+            };
+
+            const addItem = () => {
+                if (newItem.trim()) {
+                    setItems([...items, { text: newItem.trim(), completed: false }]);
+                    setNewItem('');
+                }
+            };
+
+            return (
+                <div className="h-full bg-gradient-to-br from-blue-50 to-pink-50 p-6 flex flex-col relative overflow-hidden">
+                    <div className="absolute top-0 right-0 text-9xl opacity-5 transform rotate-12">
+                        🎈
+                    </div>
+                    
+                    <h2 className="text-2xl font-handwriting text-blue-700 mb-4 text-center font-bold z-10">
+                        Cosas que quiero hacer contigo
+                    </h2>
+                    
+                    <div className="flex-1 bg-white rounded-lg shadow-md p-4 overflow-y-auto custom-scrollbar z-10">
+                        <ul className="space-y-2">
+                            {items.map((item, idx) => (
+                                idx === 0 ? (
+                                    <li key={idx} className="flex items-start gap-4 p-6 rounded-xl bg-gradient-to-r from-red-200 via-pink-200 to-purple-200 border-4 border-red-400 shadow-2xl transition-all">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={item.completed}
+                                            onChange={() => toggleItem(idx)}
+                                            className="mt-2 w-6 h-6 cursor-pointer accent-red-600"
+                                        />
+                                        <span className="text-red-600 font-bold text-4xl min-w-[40px]">🔥</span>
+                                        <span className={`font-handwriting text-red-900 text-2xl leading-relaxed flex-1 font-black uppercase tracking-wide ${item.completed ? 'line-through opacity-50' : ''}`}>
+                                            {item.text}
+                                        </span>
+                                    </li>
+                                ) : (
+                                    <li 
+                                        key={idx} 
+                                        className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-50 to-transparent hover:from-blue-100 transition-all"
+                                    >
+                                        <input 
+                                            type="checkbox" 
+                                            checked={item.completed}
+                                            onChange={() => toggleItem(idx)}
+                                            className="mt-1 w-5 h-5 cursor-pointer accent-blue-600"
+                                        />
+                                        <span className="text-blue-400 font-bold text-xl min-w-[28px]">🎈</span>
+                                        <span className={`font-handwriting text-gray-700 text-sm leading-relaxed flex-1 ${item.completed ? 'line-through opacity-50' : ''}`}>
+                                            {item.text}
+                                        </span>
+                                    </li>
+                                )
+                            ))}
+                        </ul>
+                    </div>
+                    
+                    <div className="mt-3 flex gap-2 z-10">
+                        <input 
+                            type="text"
+                            value={newItem}
+                            onChange={(e) => setNewItem(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && addItem()}
+                            placeholder="Agregar nueva actividad..."
+                            className="flex-1 px-3 py-2 border-2 border-blue-300 rounded-lg font-handwriting text-sm focus:outline-none focus:border-blue-500"
+                        />
+                        <button 
+                            onClick={addItem}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-lg font-handwriting font-bold hover:bg-blue-600 transition-colors"
+                        >
+                            Agregar
+                        </button>
+                    </div>
+                    
+                    <div className="text-center mt-2 text-xs text-blue-400 font-handwriting opacity-80 z-10">
+                        🎈 Quiero vivir mil aventuras contigo
+                    </div>
+                </div>
+            );
+        };
+
+        const ComplimentsGeneratorPage = () => {
+            const compliments = [
+                "La persona que cambió mis días desde el primer \"hola\"",
+                "La chica con el rollo más único que he visto",
+                "Mi casualidad favorita que nunca fue coincidencia",
+                "La sonrisa que me calma",
+                "La razón por la que sigo intentando",
+                "Esa mirada que me mueve todo",
+                "La persona que me inspira a ser mejor",
+                "La que se ve preciosa usando mi suéter",
+                "La que me hace sentir nervios bonitos todavía",
+                "La que me hace recordar por qué vale la pena amar",
+                "Mi persona favorita para compartir silencios",
+                "La que me hace sentir orgulloso de lo que construimos",
+                "La que me enseñó que puedo querer a alguien de verdad",
+                "La única por la que he esperado con intención",
+                "La que me hace feliz con cosas pequeñas",
+                "La que tiene una energía que no he encontrado en nadie más",
+                "La que me importa incluso cuando me hago el fuerte",
+                "La que logró que me volviera a enamorar más de una vez",
+                "La persona que, cuando se acerca, hace que todo se sienta más ligero",
+                "Mi pensamiento bonito antes de dormir",
+                "La que me hace sentir loquito",
+                "La mujer que, incluso en días difíciles, sigue siendo especial para mí",
+                "La que tiene un corazón que vale la pena cuidar",
+                "La que me hace elegirla aun cuando no es fácil",
+                "La que tiene un brillo que no siempre ve, pero yo sí",
+                "La que merece amor claro, real y sincero",
+                "La persona con la que todavía quiero intentarlo bien"
+            ];
+
+            const [currentCompliment, setCurrentCompliment] = useState(compliments[0]);
+            const [isAnimating, setIsAnimating] = useState(false);
+
+            const generateCompliment = () => {
+                setIsAnimating(true);
+                setTimeout(() => {
+                    const randomCompliment = compliments[Math.floor(Math.random() * compliments.length)];
+                    setCurrentCompliment(randomCompliment);
+                    setIsAnimating(false);
+                }, 300);
+            };
+
+            return (
+                <div className="h-full bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 p-6 flex flex-col items-center justify-center relative overflow-hidden">
+                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                        {[...Array(15)].map((_, i) => (
+                            <div 
+                                key={i} 
+                                className="absolute text-pink-200 opacity-20" 
+                                style={{ 
+                                    left: `${Math.random() * 100}%`, 
+                                    top: `${Math.random() * 100}%`,
+                                    fontSize: `${20 + Math.random() * 40}px`,
+                                    transform: `rotate(${Math.random() * 360}deg)`
+                                }}
+                            >
+                                {['💖', '✨', '🌟', '💕', '🌸'][Math.floor(Math.random() * 5)]}
+                            </div>
+                        ))}
+                    </div>
+                    
+                    <div className="z-10 text-center max-w-sm">
+                        <h2 className="text-xl font-handwriting text-rose-700 mb-6 font-bold">
+                            Cuando te sientas insuficiente o triste...
+                        </h2>
+                        
+                        <div className="bg-white rounded-2xl shadow-lg p-8 mb-6 min-h-[200px] flex flex-col items-center justify-center border-4 border-rose-100">
+                            <p className="text-lg font-handwriting text-gray-600 mb-4">
+                                Recuerda que para mí eres:
+                            </p>
+                            <p className={`text-2xl font-handwriting text-rose-600 font-bold text-center transition-all duration-300 ${isAnimating ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+                                "{currentCompliment}"
+                            </p>
+                        </div>
+                        
+                        <button 
+                            onClick={generateCompliment}
+                            className="bg-gradient-to-r from-rose-400 to-pink-500 text-white font-handwriting text-lg px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all active:scale-95"
+                        >
+                            ✨ Dame otro cumplido ✨
+                        </button>
+                        
+                        <p className="mt-6 text-sm font-handwriting text-rose-400 opacity-80">
+                            💕 Siempre serás suficiente para mí
+                        </p>
+                    </div>
+                </div>
+            );
+        };
+
+        const LetterPage = () => {
+            const fullText = `Hola Yammi…\n\nAntes que cualquier cosa, quiero que sepas algo: eres una persona increíble. No solo por lo linda que eres —que lo eres muchísimo— sino por tu forma de ser, por tu sensibilidad, por tu manera tan tuya de ver el mundo. Tienes algo especial, algo que desde la primera vez que te vi me llamó la atención y que hasta hoy sigue ahí.\n\nPara mí significas más de lo que a veces logro decir. Significas ilusión, compañía, complicidad, aprendizaje. Contigo he sentido cosas muy bonitas, y también he crecido. Me haces querer ser mejor, me haces pensar en el futuro, me haces imaginar planes, momentos… me haces sentir que lo que tenemos puede ser algo real.\n\nNo voy a mentir: también ha sido difícil. He tenido dudas, miedos, momentos donde me sentí triste o confundido. Pero aun con todo eso, lo que siento por ti no se ha ido. Si algo, se ha vuelto más consciente.\n\nYo no me quedo donde no quiero estar. Y si sigo aquí es porque contigo sí quiero estar.\n\nQuiero intentarlo. Quiero hacerlo bien. No perfecto, no sin errores, pero sí con intención, con claridad y con el compromiso de cuidar lo que estamos construyendo.\n\nTe quiero. Y esta vez lo digo sabiendo lo que implica.\nSi damos este paso, quiero que sea porque ambos estamos listos para hacerlo de verdad.\n\nYo estoy dispuesto`;
+
+            const [displayedText, setDisplayedText] = useState("");
+
+            useEffect(() => {
+                let i = 0;
+                const interval = setInterval(() => {
+                    setDisplayedText(fullText.slice(0, i));
+                    i++;
+                    if (i > fullText.length) clearInterval(interval);
+                }, 40); 
+                return () => clearInterval(interval);
+            }, []);
+
+            return (
+                <div className="h-full bg-[#fffdf5] p-8 relative shadow-inner overflow-hidden flex flex-col">
+                     <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(#e5e7eb 1px, transparent 1px)', backgroundSize: '100% 28px', marginTop: '4rem' }}></div>
+                     <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-red-200 opacity-50"></div>
+
+                     <div className="relative z-10 h-full flex flex-col">
+                        <div className="flex justify-between items-center mb-6 pl-4">
+                            <span className="text-xs text-gray-400 font-mono">13 / 02 / 2026</span>
+                            <Icons.PenTool size={16} className="text-rose-400" />
+                        </div>
+                        
+                        <div className="pl-4 pr-2 overflow-y-auto custom-scrollbar flex-1">
+                             <h3 className="text-xl font-handwriting text-rose-800 mb-4 font-bold">Querida Yammi:</h3>
+                            <p className="font-handwriting text-gray-700 text-lg leading-[28px] whitespace-pre-wrap">
+                                {displayedText}
+                                <span className="animate-pulse text-rose-500 font-bold ml-1">|</span>
+                            </p>
+                        </div>
+                     </div>
+                </div>
+            );
+        };
+
+        const ThingsWithYouPage = () => {
+            const things = [
+                "Reír sin parar 😂", "Tus besos siempre ❤️", "Abrazos eternos 🤗", "Ver el atardecer juntos 🌅",
+                "Bailar aunque sea sin música 💃", "Nuestras conversaciones largas 💬", "Tu mano en la mía 🤝", 
+                "Películas y palomitas en el sofá 🍿", "Viajes inesperados 🚗", "Explorar lugares nuevos 🗺️",
+                "Tu risa contagiosa 😄", "Desayunar juntos ☕", "Noches de películas 🎬", "Caminatas sin rumbo 🚶",
+                "Cocinar juntos (aunque sea un desastre) 🍳", "Música y canciones nuestras 🎵", "Secretos compartidos 🤫",
+                "Tus manos tocando mi cara 😌", "Vernos a los ojos 👀", "Decirte 'te quiero' 💕", "Tus sorpresas 🎁",
+                "Tiempo muerto, solo tú y yo ⏸️", "Ver cómo duermes tranquila 😴", "Tus textos por la mañana 📱",
+                "Discutir sin pelear 🗣️", "Hacer las paces 🕊️", "Tus locuras que me enamoran 🎪", "Vivir cada momento 🌟"
+            ];
+
+            return (
+                <div className="h-full bg-purple-50 p-6 flex flex-col relative">
+                    <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12">
+                        <Icons.Heart size={100} className="text-purple-500" />
+                    </div>
+                    
+                    <h2 className="text-2xl font-handwriting text-purple-700 mb-4 text-center border-b-2 border-purple-200 pb-2 z-10">
+                        Cosas que Amo Cuando Estoy Contigo
+                    </h2>
+                    
+                    <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar z-10">
+                        <ul className="space-y-2">
+                            {things.map((thing, idx) => (
+                                <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded shadow-sm text-sm font-handwriting text-gray-700 hover:bg-purple-100 transition-colors">
+                                    <span className="text-purple-400 font-bold min-w-[24px]">💜</span>
+                                    <span>{thing}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    
+                    <div className="text-center mt-2 text-xs text-purple-400 font-handwriting opacity-80">
+                        (Cada momento es especial contigo)
+                    </div>
+                </div>
+            );
+        };
+
+        const OneHundredThingsPage = () => {
+            const things = [
+                "Tu cintura", "La forma en que me miras", "Tu risa contagiosa", "Tus abrazos fuertes",
+                "Cómo te brillan los ojos cuando hablas de lo que te gusta", "Tu inteligencia", "Tu paciencia conmigo",
+                "Tus manos suaves", "Cómo hueles", "Tus besos de buenos días", "Que seas mi mejor amiga",
+                "Cómo me apoyas en mis proyectos", "Tu sentido del humor", "Que me entiendas sin palabras",
+                "Ver películas contigo", "Nuestras caminatas", "Cómo cocinas (o intentas cocinar)", "Tu valentía",
+                "Tu bondad con los demás", "Que seas detallista", "Tu voz relajante", "Tus mensajes por la mañana",
+                "Cómo te ves cuando te concentras", "Tu estilo", "Que te rías de mis chistes malos",
+                "Planear un futuro juntos", "Tu honestidad", "Cómo bailas (aunque sea gracioso)",
+                "Que me hagas sentir seguro", "Tu capacidad de perdonar", "Cómo cuidas a los animales",
+                "Tu determinación", "Que seas mi hogar", "Tus consejos sabios", "Cómo me inspiras a ser mejor",
+                "Nuestros chistes internos", "Que compartas tu comida conmigo", "Tu lado aventurero",
+                "Cómo me calmas cuando estoy estresado", "Que seas auténtica", "Tu creatividad",
+                "Verte dormir", "Que me retes a crecer", "Tu generosidad", "Que seas mi fan número 1",
+                "Cómo me defiendes", "Tus locuras", "Que confíes en mí", "Tu lealtad", "Tu ternura",
+                ...Array.from({ length: 50 }, (_, i) => `Razón #${51 + i}: Porque simplemente eres tú ❤️`)
+            ];
+
+            return (
+                <div className="h-full bg-rose-50 p-6 flex flex-col relative">
+                    <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12">
+                        <Icons.Heart size={100} className="text-rose-500" />
+                    </div>
+                    
+                    <h2 className="text-2xl font-handwriting text-rose-700 mb-4 text-center border-b-2 border-rose-200 pb-2 z-10">
+                        100 Cosas que Amo de Ti
+                    </h2>
+                    
+                    <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar z-10">
+                        <ul className="space-y-2">
+                            {things.map((thing, idx) => (
+                                <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded shadow-sm text-sm font-handwriting text-gray-700 hover:bg-rose-100 transition-colors">
+                                    <span className="text-rose-400 font-bold min-w-[24px]">{idx + 1}.</span>
+                                    <span>{thing}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    
+                    <div className="text-center mt-2 text-xs text-rose-400 font-handwriting opacity-80">
+                        (Desliza para ver más)
+                    </div>
+                </div>
+            );
+        };
+
+        const TimerPage = ({ startDate }) => {
+          const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+          const startLabel = new Date(`${startDate}T00:00:00`).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          });
+
+          useEffect(() => {
+            const interval = setInterval(() => {
+              const now = new Date();
+              const start = new Date(`${startDate}T00:00:00`);
+              const diff = now - start;
+
+              const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+              const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+              const minutes = Math.floor((diff / (1000 * 60)) % 60);
+              const seconds = Math.floor((diff / 1000) % 60);
+
+              setTime({ days, hours, minutes, seconds });
+            }, 1000);
+            return () => clearInterval(interval);
+          }, [startDate]);
+
+          return (
+            <div className="h-full flex flex-col items-center justify-center bg-white p-8 relative overflow-hidden">
+              <div className="absolute top-4 right-4 animate-spin-slow opacity-20">
+                <Doodle type="spiral" className="w-16 h-16 text-rose-400" />
+              </div>
+              <Icons.Clock size={40} className="text-rose-500 mb-4" />
+              <h2 className="text-2xl font-handwriting text-rose-700 mb-4 text-center font-bold">Desde que te conocí...</h2>
+              <p className="text-[13px] leading-5 text-rose-400 font-handwriting text-center max-w-[260px] mb-4 px-2">
+                Aunque días atrás ya te había visto, con verte la primera vez sabía que necesitaba conocerte, te vi una vez y fuiste para mí del todo interesante, con ese rollo tan único que con solo verte esa vez me gustaste, ese día en el evento y esa foto fue porque les dije a mis amigos, quiero una foto con ella, fue muy raro pero se pudo, ¿lo recuerdas? Pues desde ese día han pasado...
+              </p>
+             
+              <div className="grid grid-cols-2 gap-4 w-full max-w-xs">
+                {Object.entries(time).map(([label, value]) => (
+                  <div key={label} className="bg-rose-50 p-3 rounded-xl shadow-sm text-center border-2 border-rose-100 transform hover:scale-105 transition-transform">
+                    <span className="block text-2xl font-bold text-rose-600 font-mono">{value}</span>
+                    <span className="text-xs text-rose-400 uppercase tracking-wider font-bold">{label === 'days' ? 'Días' : label === 'hours' ? 'Horas' : label === 'minutes' ? 'Min' : 'Seg'}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-8 text-center text-rose-500 font-handwriting text-xl font-bold animate-pulse">
+                ...y todavía me siento loquito por ti ❤️
+              </p>
+            </div>
+          );
+        };
+
+        const SpecialDateCounterPage = ({ title, startDate, preDescription, postDescription, accent = "rose" }) => {
+          const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+          const startLabel = new Date(`${startDate}T00:00:00`).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          });
+
+          useEffect(() => {
+            const interval = setInterval(() => {
+              const now = new Date();
+              const start = new Date(`${startDate}T00:00:00`);
+              const diff = now - start;
+
+              const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+              const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+              const minutes = Math.floor((diff / (1000 * 60)) % 60);
+              const seconds = Math.floor((diff / 1000) % 60);
+
+              setTime({ days, hours, minutes, seconds });
+            }, 1000);
+            return () => clearInterval(interval);
+          }, [startDate]);
+
+          const bgClass = accent === "purple" ? "bg-purple-50" : accent === "blue" ? "bg-blue-50" : "bg-rose-50";
+          const textClass = accent === "purple" ? "text-purple-700" : accent === "blue" ? "text-blue-700" : "text-rose-700";
+          const subClass = accent === "purple" ? "text-purple-400" : accent === "blue" ? "text-blue-400" : "text-rose-400";
+
+          return (
+            <div className={`h-full flex flex-col items-center justify-center ${bgClass} p-8 relative overflow-hidden`}>
+              <div className="absolute top-4 right-4 animate-spin-slow opacity-20">
+                <Doodle type="spiral" className="w-16 h-16 text-gray-300" />
+              </div>
+              <Icons.Clock size={40} className={`${subClass} mb-4`} />
+              <h2 className={`text-2xl font-handwriting mb-3 text-center font-bold ${textClass}`}>{title}</h2>
+              {preDescription && (
+                <p className={`text-sm font-handwriting text-center max-w-xs mb-4 ${subClass}`}>
+                  {preDescription}
+                </p>
+              )}
+              <div className="grid grid-cols-2 gap-4 w-full max-w-xs">
+                {Object.entries(time).map(([label, value]) => (
+                  <div key={label} className="bg-white p-3 rounded-xl shadow-sm text-center border-2 border-gray-100 transform hover:scale-105 transition-transform">
+                    <span className={`block text-2xl font-bold ${textClass} font-mono`}>{value}</span>
+                    <span className={`text-xs uppercase tracking-wider font-bold ${subClass}`}>{label === 'days' ? 'Días' : label === 'hours' ? 'Horas' : label === 'minutes' ? 'Min' : 'Seg'}</span>
+                  </div>
+                ))}
+              </div>
+              {postDescription && (
+                <p className={`mt-4 text-sm font-handwriting text-center max-w-xs ${subClass}`}>
+                  {postDescription}
+                </p>
+              )}
+            </div>
+          );
+        };
+
+        const TimelinePage = () => {
+            const events = [
+                { date: "Feb 2023", title: "El primer 'Hola'", icon: <Icons.Smile size={16} /> },
+                { date: "Mar 2023", title: "Primera Cita", icon: <Icons.Calendar size={16} /> },
+                { date: "Jun 2023", title: "Primer Viaje", icon: <Icons.MapPin size={16} /> },
+            ];
+
+            return (
+                <div className="h-full bg-blue-50 p-8 flex flex-col relative">
+                    <h2 className="text-2xl font-handwriting text-blue-800 mb-6 text-center underline decoration-wavy decoration-blue-300">Nuestro Camino</h2>
+                    <div className="relative border-l-4 border-blue-200 ml-4 space-y-8 pl-6 py-2">
+                        {events.map((event, idx) => (
+                            <div key={idx} className="relative group">
+                                <div className="absolute -left-[35px] top-1 bg-white border-2 border-blue-400 rounded-full p-1 text-blue-500">
+                                    {event.icon}
+                                </div>
+                                <div className="bg-white p-3 rounded-lg shadow-sm transform transition-transform group-hover:translate-x-1 group-hover:-rotate-1">
+                                    <span className="text-xs font-bold text-blue-400 uppercase">{event.date}</span>
+                                    <h3 className="font-handwriting text-xl text-gray-700">{event.title}</h3>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                     <div className="absolute bottom-4 right-6 transform rotate-6">
+                        <Doodle type="arrow" className="w-12 h-12 text-blue-300" />
+                    </div>
+                </div>
+            );
+        };
+
+        const QuizPage = () => {
+            const [answered, setAnswered] = useState(null);
+            return (
+                <div className="h-full bg-purple-50 p-8 flex flex-col items-center justify-center text-center">
+                    <h2 className="text-2xl font-handwriting text-purple-800 mb-8 font-bold">¿Cuánto me conoces?</h2>
+                    <div className="bg-white p-6 rounded-xl shadow-md w-full border-2 border-purple-100">
+                        <p className="font-handwriting text-lg text-gray-700 mb-6">¿Cuál es mi comida favorita cuando estoy triste?</p>
+                        <div className="space-y-3">
+                            <button onClick={() => setAnswered('wrong')} className={`w-full p-2 rounded-lg border-2 font-handwriting transition-colors ${answered === 'wrong' ? 'bg-red-100 border-red-300 text-red-600' : 'border-purple-200 hover:bg-purple-50 text-gray-600'}`}>
+                                Ensalada César 🥗
+                            </button>
+                            <button onClick={() => setAnswered('correct')} className={`w-full p-2 rounded-lg border-2 font-handwriting transition-colors ${answered === 'correct' ? 'bg-green-100 border-green-300 text-green-600' : 'border-purple-200 hover:bg-purple-50 text-gray-600'}`}>
+                                Helado de Chocolate 🍦
+                            </button>
+                        </div>
+                        {answered === 'correct' && <div className="mt-4 animate-bounce text-green-500 font-bold font-handwriting">¡Siii! Me conoces tan bien ❤️</div>}
+                        {answered === 'wrong' && <div className="mt-4 text-red-400 font-handwriting text-sm">Mmm... inténtalo otra vez 😅</div>}
+                    </div>
+                </div>
+            )
+        }
+
+        const BucketListPage = () => {
+            const [items, setItems] = useState([
+                { id: 1, text: "Ver auroras boreales", done: false },
+                { id: 2, text: "Adoptar un perrito", done: true },
+                { id: 3, text: "Aprender a cocinar pasta", done: false },
+                { id: 4, text: "Viajar a Japón", done: false },
+            ]);
+
+            const toggleItem = (id) => {
+                setItems(items.map(item => item.id === id ? {...item, done: !item.done} : item));
+            };
+
+            return (
+                <div className="h-full bg-green-50 p-8 relative">
+                     <div className="absolute top-2 right-2 transform rotate-12 opacity-30">
+                         <Doodle type="star" className="w-12 h-12 text-green-600" />
+                    </div>
+                    <h2 className="text-2xl font-handwriting text-green-800 mb-6 text-center border-b-2 border-green-200 pb-2 inline-block w-full">Nuestros Sueños</h2>
+                    <div className="space-y-4">
+                        {items.map(item => (
+                            <div key={item.id} onClick={() => toggleItem(item.id)} className="flex items-center gap-3 cursor-pointer group">
+                                <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-colors ${item.done ? 'bg-green-500 border-green-500' : 'border-green-300 bg-white'}`}>
+                                    {item.done && <Icons.CheckCircle size={16} className="text-white" />}
+                                </div>
+                                <span className={`font-handwriting text-xl transition-all ${item.done ? 'text-green-400 line-through' : 'text-gray-700 group-hover:text-green-600'}`}>{item.text}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="absolute bottom-6 left-0 w-full text-center text-xs text-green-600 font-handwriting opacity-70">* Toca para cumplir un sueño</div>
+                </div>
+            )
+        }
+
+        const SecretPage = () => {
+            const [code, setCode] = useState("");
+            const [unlocked, setUnlocked] = useState(false);
+            const SECRET_CODE = "1402"; 
+
+            const handleInput = (e) => {
+                const val = e.target.value;
+                if(val.length <= 4) setCode(val);
+                if(val === SECRET_CODE) setUnlocked(true);
+            }
+
+            return (
+                <div className="h-full bg-gray-800 text-white p-8 flex flex-col items-center justify-center relative">
+                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                    {!unlocked ? (
+                        <div className="text-center z-10">
+                            <Icons.Lock size={48} className="mx-auto mb-4 text-gray-400" />
+                            <h2 className="text-xl font-handwriting mb-4">Área Secreta</h2>
+                            <p className="text-sm text-gray-400 mb-4">Ingresa nuestro día y mes (DDMM)</p>
+                            <input type="password" value={code} onChange={handleInput} className="bg-gray-700 border border-gray-600 rounded px-4 py-2 text-center text-xl tracking-widest outline-none focus:border-rose-500 w-32" placeholder="____" />
+                        </div>
+                    ) : (
+                        <div className="text-center z-10 animate-fade-in">
+                            <Icons.Unlock size={48} className="mx-auto mb-4 text-green-400" />
+                            <h2 className="text-2xl font-handwriting text-rose-300 mb-2">¡Te Amo!</h2>
+                            <p className="font-handwriting text-gray-300">Eres mi secreto favorito y mi certeza más grande.</p>
+                            <div className="mt-6 text-4xl animate-pulse">❤️</div>
+                        </div>
+                    )}
+                </div>
+            )
+        }
+
+        const CouponPage = () => (
+          <div className="h-full bg-rose-50 p-6 flex flex-col items-center justify-center">
+            <h2 className="text-2xl font-handwriting text-rose-700 mb-6 flex items-center gap-2">
+              <Icons.Gift size={24} /> Cupones
+            </h2>
+            <div className="w-full space-y-4">
+              <div className="border-2 border-dashed border-rose-300 bg-white p-4 rounded-lg relative overflow-hidden group hover:bg-rose-50 transition-colors cursor-pointer shadow-sm">
+                <div className="absolute -left-2 top-1/2 w-4 h-4 bg-rose-50 rounded-full transform -translate-y-1/2 border-r-2 border-rose-300"></div>
+                <div className="absolute -right-2 top-1/2 w-4 h-4 bg-rose-50 rounded-full transform -translate-y-1/2 border-l-2 border-rose-300"></div>
+                <h3 className="font-bold text-rose-600 text-center text-sm sm:text-base">CENA ROMÁNTICA</h3>
+                <p className="text-xs text-center text-gray-500 font-handwriting mt-1">Donde tú quieras (yo pago)</p>
+              </div>
+              <div className="border-2 border-dashed border-purple-300 bg-white p-4 rounded-lg relative overflow-hidden group hover:bg-purple-50 transition-colors cursor-pointer shadow-sm">
+                <div className="absolute -left-2 top-1/2 w-4 h-4 bg-rose-50 rounded-full transform -translate-y-1/2 border-r-2 border-purple-300"></div>
+                <div className="absolute -right-2 top-1/2 w-4 h-4 bg-rose-50 rounded-full transform -translate-y-1/2 border-l-2 border-purple-300"></div>
+                <h3 className="font-bold text-purple-600 text-center text-sm sm:text-base">MASAJE DE ESPALDA</h3>
+                <p className="text-xs text-center text-gray-500 font-handwriting mt-1">Sin límite de tiempo</p>
+              </div>
+            </div>
+          </div>
+        );
+
+        const MusicPage = () => (
+          <div className="h-full bg-gray-900 text-white p-6 flex flex-col items-center justify-center relative overflow-hidden">
+            <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
+            <div className="z-10 w-full max-w-xs bg-gray-800 rounded-xl p-4 shadow-2xl border border-gray-700">
+              <div className="w-full h-32 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg mb-4 flex items-center justify-center shadow-lg relative overflow-hidden group">
+                <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                <Icons.Music size={48} className="text-white animate-bounce" />
+              </div>
+              <div className="mb-2">
+                <h3 className="font-bold text-lg truncate font-sans">Perfect</h3>
+                <p className="text-gray-400 text-xs uppercase tracking-wide">Ed Sheeran</p>
+              </div>
+              <div className="w-full bg-gray-700 h-1 rounded-full mb-4 cursor-pointer group">
+                <div className="bg-green-400 h-1 rounded-full w-2/3 relative group-hover:bg-green-300">
+                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+              </div>
+              <div className="flex justify-between items-center text-2xl">
+                <button className="text-gray-400 hover:text-white transition">⏮</button>
+                <button className="bg-white text-black rounded-full w-10 h-10 flex items-center justify-center hover:scale-110 transition shadow-lg text-sm">▶</button>
+                <button className="text-gray-400 hover:text-white transition">⏭</button>
+              </div>
+            </div>
+          </div>
+        );
+
+          const App = () => {
+          const [currentPage, setCurrentPage] = useState(() => {
+            // Cargar última página visitada
+            const saved = localStorage.getItem('lastPage');
+            return saved ? parseInt(saved) : 0;
+          });
+          const [darkMode, setDarkMode] = useState(false);
+          const [loading, setLoading] = useState(true);
+          
+          const relationshipStartDate = "2025-02-14"; 
+          const photoSources = [
+            "recuerdos/recuerdo-1.jpg",
+            "recuerdos/recuerdo-2.jpg",
+            "recuerdos/recuerdo-3.jpg",
+            "recuerdos/recuerdo-4.jpg",
+            "recuerdos/recuerdo-5.jpg",
+            "recuerdos/recuerdo-6.jpg",
+            "recuerdos/recuerdo-7.jpg",
+            "recuerdos/recuerdo-8.jpg",
+            "recuerdos/recuerdo-9.jpg",
+            "recuerdos/recuerdo-10.jpg",
+            "recuerdos/recuerdo-11.jpg"
+          ];
+
+          const pages = [
+            { component: <CoverPage onOpen={() => turnPage('next')} /> },
+            { component: <TimerPage startDate={relationshipStartDate} /> },
+            { component: <SpecialDateCounterPage title="Desde nuestro primer beso" startDate="2025-03-25" accent="purple" preDescription="¿Recuerdas nuestra primera salida y nuestro primer beso? Pues ya pasaron..." postDescription="Después de ese video que grabamos fui la persona más feliz, estaba emocionado, solo hablaba de eso, decidí invitarte a salir y fue la mejor idea que tuve, esa salida y luego ese beso, fue increíble y para mí es el día más importante contigo." /> },
+            { component: <SpecialDateCounterPage title="El día que decidimos ser novios" startDate="2025-05-29" accent="blue" preDescription="¿Recuerdas? Fue un día increíble. La persona que miré una vez y creí inalcanzable era mi novia, y aunque cuando te lo pedí te reíste, fui bastante feliz. Aún me gusta pasar por ahí y me detengo a recordar lo que se vivió ahí en esa banca; desde ese día han pasado..." /> },
+            { component: <SpecialDateCounterPage title="Ese te amo" startDate="2025-10-22" accent="rose" preDescription="Uno de los momentos más lindos fue ese te amo; no sabes lo bonito que sentí y lo lindo que fue que lo hayas dicho tú. Se sintió tan genuino y tan bonito. Recuerdo que se te salió y no querías aceptar que lo dijiste, pero una vez que lo aceptaste no parabas de decirlo. Sonabas muy linda; pues ese te amo fue hace..." /> },
+            { component: <ReasonsWhyYouPage /> },
+            { component: <ThingsToDoTogetherPage /> },
+            { component: <ComplimentsGeneratorPage /> },
+            { component: <LetterPage /> },
+          ];
+
+          const totalPages = pages.length;
+
+          // Sonido de página
+          const pageSound = useRef(null);
+          
+          useEffect(() => {
+            // Precargar el sonido
+            pageSound.current = new Audio('sound.mp3');
+            pageSound.current.volume = 0.5;
+            pageSound.current.preload = 'auto';
+            
+            // Animación de carga
+            setTimeout(() => setLoading(false), 1500);
+          }, []);
+          
+          // Guardar página actual
+          useEffect(() => {
+            localStorage.setItem('lastPage', currentPage.toString());
+          }, [currentPage]);
+          
+          // Atajos de teclado
+          useEffect(() => {
+            const handleKeyPress = (e) => {
+              if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                turnPage('next');
+              } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                turnPage('prev');
+              } else if (e.key === 'Escape') {
+                setCurrentPage(0);
+              } else if (e.key === 'd' || e.key === 'D') {
+                setDarkMode(prev => !prev);
+              }
+            };
+            
+            window.addEventListener('keydown', handleKeyPress);
+            return () => window.removeEventListener('keydown', handleKeyPress);
+          }, [currentPage]);
+
+          const playPageTurnSound = () => {
+            try {
+              if (pageSound.current) {
+                pageSound.current.currentTime = 0;
+                pageSound.current.play().catch(e => console.log('Audio playback failed:', e));
+              }
+            } catch (e) {
+              console.log('Audio no disponible');
+            }
+          };
+          
+          const turnPage = (direction) => {
+            if (direction === 'next' && currentPage < totalPages - 1) {
+              playPageTurnSound();
+              setCurrentPage(curr => curr + 1);
+            } else if (direction === 'prev' && currentPage > 0) {
+              playPageTurnSound();
+              setCurrentPage(curr => curr - 1);
+            }
+          };
+
+          const FloatingHearts = () => {
+            return (
+              <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                {[...Array(20)].map((_, i) => (
+                  <div key={i} className="absolute text-pink-300 opacity-40 animate-float" style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%`, animationDuration: `${5 + Math.random() * 10}s`, fontSize: `${10 + Math.random() * 30}px` }}>
+                    {i % 2 === 0 ? '❤️' : '✨'}
+                  </div>
+                ))}
+              </div>
+            );
+          };
+          
+          // Pantalla de carga
+          if (loading) {
+            return (
+              <div className="min-h-screen bg-gradient-to-br from-pink-100 to-rose-200 flex flex-col items-center justify-center">
+                <div className="fade-in-scale">
+                  <Icons.Heart fill="currentColor" size={80} className="text-rose-500 animate-bounce-slow mx-auto mb-4" />
+                  <h2 className="text-3xl font-handwriting text-rose-700 font-bold">
+                    Cargando nuestro libro...
+                  </h2>
+                  <div className="mt-4 flex gap-2 justify-center">
+                    <div className="w-3 h-3 bg-rose-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+                    <div className="w-3 h-3 bg-rose-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-3 h-3 bg-rose-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <div className={`min-h-screen ${darkMode ? 'dark-mode' : 'bg-[#f2e8cf]'} flex flex-col items-center justify-center p-4 font-sans overflow-hidden custom-cursor transition-colors duration-500`}>
+              <FloatingHearts />
+              
+              <div className="relative z-10 w-full max-w-4xl h-[520px] sm:h-[580px] flex items-center justify-center perspective-1500 px-2">
+                {/* Sombra del libro sobre la mesa */}
+                <div className="absolute bottom-0 w-[400px] h-[40px] bg-black/10 blur-2xl rounded-full transform translate-y-16"></div>
+                {/* Sombra de manos */}
+                <div className="book-hands"></div>
+                
+                <div className={`relative w-[92vw] max-w-[340px] md:max-w-[420px] h-[500px] sm:h-[550px] transform-style-3d transition-all duration-700 ease-out ${currentPage > 0 ? 'translate-x-[6%] sm:translate-x-[10%] md:translate-x-[50%]' : ''}`}>
+                  {pages.map((page, index) => {
+                    const zIndex = totalPages - index;
+                    const isFlipped = index < currentPage;
+                    const isCurrent = index === currentPage;
+                    return (
+                      <div 
+                        key={index} 
+                        className={`absolute inset-0 w-full h-full origin-left transition-all duration-800 transform-style-3d bg-white rounded-r-lg border-l-4 border-amber-900/20 paper-texture
+                          ${isFlipped ? 'rotate-y-180 page-shadow-flipped' : 'rotate-y-0 page-shadow-active'}
+                          ${isCurrent ? 'shadow-2xl' : ''}`}
+                        style={{ 
+                          zIndex: isFlipped ? index : zIndex,
+                          transitionTimingFunction: 'cubic-bezier(0.645, 0.045, 0.355, 1.000)',
+                          boxShadow: isFlipped 
+                            ? '2px 0 8px rgba(0,0,0,0.1), inset -5px 0 15px rgba(0,0,0,0.05)'
+                            : isCurrent
+                            ? '-15px 0 30px rgba(0,0,0,0.2), -25px 0 50px rgba(0,0,0,0.1), inset 8px 0 15px rgba(0,0,0,0.03)'
+                            : '-10px 0 20px rgba(0,0,0,0.15), inset 5px 0 10px rgba(0,0,0,0.02)'
+                        }}>
+                        {/* Frente de la página */}
+                        <div className="absolute inset-0 w-full h-full backface-hidden rounded-r-lg overflow-hidden bg-white">
+                          {page.component}
+                          {/* Efecto de borde interno */}
+                          <div className="absolute inset-0 pointer-events-none rounded-r-lg" style={{
+                            boxShadow: 'inset -1px 0 2px rgba(0,0,0,0.1), inset 1px 0 2px rgba(255,255,255,0.5)'
+                          }}></div>
+                          <div className="absolute bottom-3 right-4 text-gray-400 text-sm font-handwriting flex items-center gap-1">
+                             {index > 0 && <span>{index}</span>}
+                             {index > 0 && <span className="text-[10px]">❤️</span>}
+                          </div>
+                        </div>
+                        {/* Reverso de la página */}
+                        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-l-lg overflow-hidden">
+                            <LeftPhotoPage pageIndex={index} photoSrc={photoSources[index]} />
+                            {/* Efecto de borde interno para el reverso */}
+                            <div className="absolute inset-0 pointer-events-none rounded-l-lg" style={{
+                              boxShadow: 'inset 1px 0 2px rgba(0,0,0,0.1), inset -1px 0 2px rgba(255,255,255,0.5)'
+                            }}></div>
+                        </div>
+                        {/* Lomo/borde de la página simulando grosor */}
+                        <div className="absolute left-0 top-0 bottom-0 w-[6px] book-spine transform -translate-x-full rounded-l-sm" style={{
+                          boxShadow: '-2px 0 4px rgba(0,0,0,0.3)'
+                        }}></div>
+                      </div>
+                    );
+                  })}
+                  {/* Páginas del libro acumuladas (efecto de grosor) */}
+                  <div className="absolute inset-0 w-full h-full bg-amber-50 rounded-r-lg -z-10 shadow-2xl transform translate-x-1 translate-y-1 border-r-2 border-amber-900/10"></div>
+                  <div className="absolute inset-0 w-full h-full bg-amber-100 rounded-r-lg -z-20 shadow-2xl transform translate-x-2 translate-y-2 border-r-2 border-amber-900/10"></div>
+                  <div className="absolute inset-0 w-full h-full bg-amber-200 rounded-r-lg -z-30 shadow-2xl transform translate-x-3 translate-y-3 border-r-2 border-amber-900/10"></div>
+                </div>
+              </div>
+
+              <div className="mt-8 z-20 flex gap-8 items-center bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-xl border-2 border-rose-100">
+                <button 
+                  onClick={() => turnPage('prev')} 
+                  disabled={currentPage === 0} 
+                  className={`p-3 rounded-full transition-all duration-200 ${
+                    currentPage === 0 
+                      ? 'text-gray-300 cursor-not-allowed bg-gray-50' 
+                      : 'bg-gradient-to-br from-rose-100 to-pink-100 text-rose-600 hover:from-rose-200 hover:to-pink-200 hover:scale-110 hover:shadow-lg active:scale-95 active:shadow-sm'
+                  }`}
+                  style={{ willChange: 'transform' }}
+                >
+                  <Icons.ArrowRight size={24} className="transform rotate-180" />
+                </button>
+                <div className="text-gray-600 text-base font-handwriting font-bold w-20 text-center">
+                  {currentPage === 0 ? 'Inicio' : `Pág ${currentPage}`}
+                </div>
+                <button 
+                  onClick={() => turnPage('next')} 
+                  disabled={currentPage === totalPages - 1} 
+                  className={`p-3 rounded-full transition-all duration-200 ${
+                    currentPage === totalPages - 1 
+                      ? 'text-gray-300 cursor-not-allowed bg-gray-50' 
+                      : 'bg-gradient-to-br from-rose-100 to-pink-100 text-rose-600 hover:from-rose-200 hover:to-pink-200 hover:scale-110 hover:shadow-lg active:scale-95 active:shadow-sm'
+                  }`}
+                  style={{ willChange: 'transform' }}
+                >
+                  <Icons.ArrowRight size={24} />
+                </button>
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
