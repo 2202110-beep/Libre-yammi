@@ -85,7 +85,106 @@
           animation-iteration-count: infinite;
         }
 
-        /* Scrollbar personalizado */
+        /* Animaciones de scroll */
+        .scroll-fade-in {
+          opacity: 0;
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .scroll-slide-left {
+          opacity: 0;
+          animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .scroll-slide-right {
+          opacity: 0;
+          animation: slideInRight 0.8s ease-out forwards;
+        }
+
+        .scroll-scale {
+          opacity: 0;
+          animation: scaleIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-60px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(60px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        /* Scroll Reveal Effect */
+        .reveal {
+          opacity: 0;
+        }
+
+        .reveal.active {
+          opacity: 1;
+        }
+
+        .reveal-fade {
+          opacity: 0;
+          transition: opacity 0.8s ease-out;
+        }
+
+        .reveal-fade.active {
+          opacity: 1;
+        }
+
+        /* Galería de fotos */
+        .photo-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1rem;
+        }
+
+        .photo-item {
+          cursor: pointer;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo-item:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #fecdd3; border-radius: 4px; }
@@ -228,6 +327,111 @@
                 <svg viewBox="0 0 24 24" fill={type === 'heart' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`${className} ${color} opacity-70`}>
                     <path d={paths[type] || paths.star} />
                 </svg>
+            );
+        };
+
+        // --- COMPONENTES DE SCROLL ---
+
+        const ScrollSection = ({ children, delay = 0 }) => {
+            const [isVisible, setIsVisible] = useState(false);
+            const ref = useRef(null);
+
+            useEffect(() => {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) {
+                            setTimeout(() => {
+                                setIsVisible(true);
+                                observer.unobserve(ref.current);
+                            }, delay);
+                        }
+                    },
+                    { threshold: 0.1 }
+                );
+
+                if (ref.current) observer.observe(ref.current);
+                return () => observer.disconnect();
+            }, [delay]);
+
+            return (
+                <div 
+                    ref={ref}
+                    className={`transition-all duration-700 ${
+                        isVisible 
+                            ? 'opacity-100 translate-y-0' 
+                            : 'opacity-0 translate-y-10'
+                    }`}
+                >
+                    {children}
+                </div>
+            );
+        };
+
+        const PhotoGallery = () => {
+            const [selectedPhoto, setSelectedPhoto] = useState(null);
+            const photoSources = [
+                "recuerdos/animada.jpeg",
+                "recuerdos/recuerdo-1.jpg",
+                "recuerdos/recuerdo-2.jpg",
+                "recuerdos/recuerdo-3.jpg",
+                "recuerdos/recuerdo-4.jpg",
+                "recuerdos/recuerdo-5.jpg",
+                "recuerdos/recuerdo-6.jpg",
+                "recuerdos/recuerdo-7.jpg",
+                "recuerdos/recuerdo-8.jpg",
+                "recuerdos/WhatsApp Image 2026-02-13 at 6.52.43 PM.jpeg",
+                "recuerdos/WhatsApp Image 2026-02-14 at 11.54.14 PM.jpeg"
+            ];
+
+            return (
+                <div className="w-full">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                        {photoSources.map((src, idx) => (
+                            <div 
+                                key={idx}
+                                onClick={() => setSelectedPhoto(src)}
+                                className="photo-item relative overflow-hidden rounded-lg bg-gray-200 aspect-square cursor-pointer group"
+                            >
+                                <img 
+                                    src={src}
+                                    alt={`Recuerdo ${idx}`}
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                    onError={(e) => {
+                                        e.target.src = `https://picsum.photos/seed/photo-${idx}/300/300`;
+                                    }}
+                                />
+                                <div className="absolute inset-0 bg-rose-500/0 group-hover:bg-rose-500/20 transition-colors duration-300 flex items-center justify-center">
+                                    <span className="text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity">💖</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Modal de foto ampliada */}
+                    {selectedPhoto && (
+                        <div 
+                            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+                            onClick={() => setSelectedPhoto(null)}
+                        >
+                            <div className="relative max-w-2xl max-h-[80vh] bg-white rounded-lg overflow-hidden animate-scale">
+                                <img 
+                                    src={selectedPhoto}
+                                    alt="Recuerdo ampliado"
+                                    className="w-full h-full object-contain"
+                                    onError={(e) => {
+                                        e.target.src = 'https://picsum.photos/500/500';
+                                    }}
+                                />
+                                <button 
+                                    onClick={() => setSelectedPhoto(null)}
+                                    className="absolute top-4 right-4 bg-rose-500 text-white p-2 rounded-full hover:bg-rose-600 transition-colors"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
             );
         };
 
@@ -1122,26 +1326,42 @@
           }
 
           return (
-            <div className={`min-h-screen ${darkMode ? 'dark-mode' : 'bg-[#f2e8cf]'} w-full transition-colors duration-500`}>
+            <div className={`${darkMode ? 'dark-mode' : 'bg-[#f2e8cf]'} w-full transition-colors duration-500`}>
               <FloatingHearts />
               
               {/* Contenedor de scroll vertical */}
               <div className="w-full">
                 {/* Portada */}
                 <section className="min-h-screen w-full flex items-center justify-center p-4">
-                  <div className="w-full max-w-2xl">
-                    <CoverPage onOpen={() => {}} />
-                  </div>
+                  <ScrollSection delay={0}>
+                    <div className="w-full max-w-2xl">
+                      <CoverPage onOpen={() => {}} />
+                    </div>
+                  </ScrollSection>
                 </section>
 
                 {/* Todas las páginas de contenido */}
                 {pages.map((page, index) => (
                   <section key={index} className="min-h-screen w-full flex items-center justify-center p-4 py-12">
-                    <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6">
-                      {page.component}
-                    </div>
+                    <ScrollSection delay={index * 100}>
+                      <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6">
+                        {page.component}
+                      </div>
+                    </ScrollSection>
                   </section>
                 ))}
+
+                {/* Galería de fotos */}
+                <section className="min-h-screen w-full flex items-center justify-center p-4 py-12">
+                  <ScrollSection delay={(pages.length) * 100}>
+                    <div className="w-full max-w-4xl">
+                      <h2 className="text-4xl font-handwriting text-rose-700 mb-8 text-center font-bold">
+                        Nuestros Momentos Capturados 📸
+                      </h2>
+                      <PhotoGallery />
+                    </div>
+                  </ScrollSection>
+                </section>
               </div>
             </div>
           );
