@@ -1079,7 +1079,7 @@
                                     animationDelay: `${i * 0.2}s`
                                 }}
                             >
-                                {['💖', '✨', '🌟', '💕', '🌸'][Math.floor(Math.random() * 5)]}
+                                {['💖', '💕', '🌹', '💝', '✨'][Math.floor(Math.random() * 5)]}
                             </div>
                         ))}
                     </div>
@@ -1157,34 +1157,34 @@
                 "Bailar aunque sea sin música 💃", "Nuestras conversaciones largas 💬", "Tu mano en la mía 🤝", 
                 "Películas y palomitas en el sofá 🍿", "Viajes inesperados 🚗", "Explorar lugares nuevos 🗺️",
                 "Tu risa contagiosa 😄", "Desayunar juntos ☕", "Noches de películas 🎬", "Caminatas sin rumbo 🚶",
-                "Cocinar juntos (aunque sea un desastre) 🍳", "Música y canciones nuestras 🎵", "Secretos compartidos 🤫",
-                "Tus manos tocando mi cara 😌", "Vernos a los ojos 👀", "Decirte 'te quiero' 💕", "Tus sorpresas 🎁",
-                "Tiempo muerto, solo tú y yo ⏸️", "Ver cómo duermes tranquila 😴", "Tus textos por la mañana 📱",
-                "Discutir sin pelear 🗣️", "Hacer las paces 🕊️", "Tus locuras que me enamoran 🎪", "Vivir cada momento 🌟"
+                "Cocinar juntos (aunque sea un desastre) 🍳", "Música y canciones nuestras 🎵", "Secretos compartidos 💏",
+                "Tus manos tocando mi cara 😌", "Vernos a los ojos 👀", "Decirte 'te quiero' 💕", "Tus sorpresas 💝",
+                "Tiempo muerto, solo tú y yo ⏸️", "Ver cómo duermes tranquila 😴", "Tus textos por la mañana 💌",
+                "Discutir sin pelear 🗣️", "Hacer las paces 💋", "Tus locuras que me enamoran 💃", "Vivir cada momento 💖"
             ];
 
             return (
-                <div className="h-full bg-purple-50 p-6 flex flex-col relative overflow-hidden">
+                <div className="h-full bg-red-50 p-6 flex flex-col relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12">
-                        <Icons.Heart size={100} className="text-purple-500" />
+                        <Icons.Heart size={100} className="text-red-400" />
                     </div>
                     
-                    <h2 className="text-2xl font-handwriting text-purple-700 mb-4 text-center border-b-2 border-purple-200 pb-2 z-10">
+                    <h2 className="text-2xl font-handwriting text-red-600 mb-4 text-center border-b-2 border-red-200 pb-2 z-10">
                         Cosas que Amo Cuando Estoy Contigo
                     </h2>
                     
                     <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar z-10">
                         <ul className="space-y-2">
                             {things.map((thing, idx) => (
-                                <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded shadow-sm text-sm font-handwriting text-gray-700 hover:bg-purple-100 hover:scale-105 transition-all stagger-child" style={{animationDelay: `${(idx % 6) * 0.05}s`}}>
-                                    <span className="text-purple-400 font-bold min-w-[24px]">💜</span>
+                                <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded shadow-sm text-sm font-handwriting text-gray-700 hover:bg-red-50 hover:scale-105 transition-all stagger-child" style={{animationDelay: `${(idx % 6) * 0.05}s`}}>
+                                    <span className="text-red-400 font-bold min-w-[24px]">💖</span>
                                     <span>{thing}</span>
                                 </li>
                             ))}
                         </ul>
                     </div>
                     
-                    <div className="text-center mt-2 text-xs text-purple-400 font-handwriting opacity-80">
+                    <div className="text-center mt-2 text-xs text-red-400 font-handwriting opacity-80">
                         (Cada momento es especial contigo)
                     </div>
                 </div>
@@ -1211,27 +1211,27 @@
             ];
 
             return (
-                <div className="h-full bg-rose-50 p-6 flex flex-col relative overflow-hidden">
+                <div className="h-full bg-red-50 p-6 flex flex-col relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12">
-                        <Icons.Heart size={100} className="text-rose-500" />
+                        <Icons.Heart size={100} className="text-red-400" />
                     </div>
                     
-                    <h2 className="text-2xl font-handwriting text-rose-700 mb-4 text-center border-b-2 border-rose-200 pb-2 z-10">
+                    <h2 className="text-2xl font-handwriting text-red-600 mb-4 text-center border-b-2 border-red-200 pb-2 z-10">
                         100 Cosas que Amo de Ti
                     </h2>
                     
                     <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar z-10">
                         <ul className="space-y-2">
                             {things.map((thing, idx) => (
-                                <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded shadow-sm text-sm font-handwriting text-gray-700 hover:bg-rose-100 hover:scale-105 hover:shadow-md transition-all stagger-child" style={{animationDelay: `${(idx % 6) * 0.05}s`}}>
-                                    <span className="text-rose-400 font-bold min-w-[24px]">{idx + 1}.</span>
+                                <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded shadow-sm text-sm font-handwriting text-gray-700 hover:bg-red-50 hover:scale-105 hover:shadow-md transition-all stagger-child" style={{animationDelay: `${(idx % 6) * 0.05}s`}}>
+                                    <span className="text-red-400 font-bold min-w-[24px]">{idx + 1}.</span>
                                     <span>{thing}</span>
                                 </li>
                             ))}
                         </ul>
                     </div>
                     
-                    <div className="text-center mt-2 text-xs text-rose-400 font-handwriting opacity-80">
+                    <div className="text-center mt-2 text-xs text-red-400 font-handwriting opacity-80">
                         (Desliza para ver más)
                     </div>
                 </div>
