@@ -283,16 +283,16 @@
         @keyframes pulse-glow {
           0%, 100% { 
             opacity: 1;
-            box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7);
+            box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4);
           }
           50% { 
-            opacity: 0.85;
-            box-shadow: 0 0 0 15px rgba(236, 72, 153, 0);
+            opacity: 0.95;
+            box-shadow: 0 0 0 8px rgba(236, 72, 153, 0);
           }
         }
         
         .animate-pulse-glow {
-          animation: pulse-glow 2s infinite;
+          animation: pulse-glow 3s infinite;
         }
         
         /* Shimmer/Brillo */
@@ -321,12 +321,12 @@
         
         /* Efecto de glow */
         @keyframes glow {
-          0%, 100% { text-shadow: 0 0 5px rgba(236, 72, 153, 0.5); }
-          50% { text-shadow: 0 0 20px rgba(236, 72, 153, 0.9); }
+          0%, 100% { text-shadow: 0 0 3px rgba(236, 72, 153, 0.3); }
+          50% { text-shadow: 0 0 10px rgba(236, 72, 153, 0.5); }
         }
         
         .animate-glow {
-          animation: glow 2s ease-in-out infinite;
+          animation: glow 3.5s ease-in-out infinite;
         }
         
         /* Efecto de onda/ripple */
@@ -502,11 +502,11 @@
         /* Color pulse */
         @keyframes color-pulse {
           0%, 100% { color: #ec4899; }
-          50% { color: #f472b6; }
+          50% { color: #f1a9d8; }
         }
         
         .animate-color-pulse {
-          animation: color-pulse 1.5s ease-in-out infinite;
+          animation: color-pulse 2.5s ease-in-out infinite;
         }
         
         /* Blur reveal */
@@ -863,11 +863,11 @@
 
             return (
                 <div className="h-full bg-gradient-to-br from-rose-50 to-pink-50 p-6 flex flex-col relative overflow-hidden">
-                    <div className="absolute top-0 right-0 text-9xl opacity-5 transform rotate-12 animate-float-smooth">
+                    <div className="absolute top-0 right-0 text-9xl opacity-5 transform rotate-12">
                         💖
                     </div>
                     
-                    <h2 className="text-2xl font-handwriting text-rose-700 mb-4 text-center font-bold z-10 animate-slide-down">
+                    <h2 className="text-2xl font-handwriting text-rose-700 mb-4 text-center font-bold z-10">
                         Por qué quiero estar contigo
                     </h2>
                     
@@ -879,12 +879,12 @@
                                     className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-rose-50 to-transparent hover:from-rose-100 hover:to-rose-50 transition-all transform hover:scale-105 hover:shadow-md stagger-child"
                                     style={{animationDelay: `${(idx % 6) * 0.05}s`}}
                                 >
-                                    <span className="text-rose-400 font-bold text-xl min-w-[28px] animate-bounce-custom" style={{animationDelay: `${idx * 0.05}s`}}>💖</span>
+                                    <span className="text-rose-400 font-bold text-xl min-w-[28px]">💖</span>
                                     <span className="font-handwriting text-gray-700 text-sm leading-relaxed flex-1">{item}</span>
                                 </li>
                             ))}
-                            <li className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-rose-100 to-rose-50 border-2 border-rose-300 shadow-lg mt-4 animate-glow-border stagger-child">
-                                <span className="text-rose-500 font-bold text-2xl min-w-[28px] animate-pulse-glow">💖</span>
+                            <li className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-rose-100 to-rose-50 border-2 border-rose-300 shadow-lg mt-4 stagger-child">
+                                <span className="text-rose-500 font-bold text-2xl min-w-[28px]">💖</span>
                                 <span className="font-handwriting text-rose-800 text-base leading-relaxed flex-1 font-bold">
                                     Porque quiero que seas tú, quiero estar contigo no por costumbre, sino porque todo lo que hemos vivido es muy único, quiero poder ser esa persona a la cual puedes correr y poder estar siempre contigo y para ti.
                                 </span>
@@ -892,7 +892,7 @@
                         </ul>
                     </div>
                     
-                    <div className="text-center mt-3 text-xs text-rose-400 font-handwriting opacity-80 z-10 animate-bounce-custom">
+                    <div className="text-center mt-3 text-xs text-rose-400 font-handwriting opacity-80 z-10">
                         ❤️ Hay tantas razones más...
                     </div>
                 </div>
@@ -1085,15 +1085,15 @@
                     </div>
                     
                     <div className="z-10 text-center max-w-sm">
-                        <h2 className="text-xl font-handwriting text-rose-700 mb-6 font-bold animate-slide-down">
+                        <h2 className="text-xl font-handwriting text-rose-700 mb-6 font-bold">
                             Cuando te sientas insuficiente o triste...
                         </h2>
                         
                         <div className="bg-white rounded-2xl shadow-lg p-8 mb-6 min-h-[200px] flex flex-col items-center justify-center border-4 border-rose-100 hover:shadow-2xl hover:border-rose-300 transition-all duration-300 hover:scale-105">
-                            <p className="text-lg font-handwriting text-gray-600 mb-4 animate-slide-up">
+                            <p className="text-lg font-handwriting text-gray-600 mb-4">
                                 Recuerda que para mí eres:
                             </p>
-                            <p className={`text-2xl font-handwriting text-rose-600 font-bold text-center transition-all duration-300 ${isAnimating ? 'opacity-0 scale-95 blur-sm' : 'opacity-100 scale-100 blur-none'} animate-glow`}>
+                            <p className={`text-2xl font-handwriting text-rose-600 font-bold text-center transition-all duration-300 ${isAnimating ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
                                 "{currentCompliment}"
                             </p>
                         </div>
@@ -1105,7 +1105,7 @@
                             ✨ Dame otro cumplido ✨
                         </button>
                         
-                        <p className="mt-6 text-sm font-handwriting text-rose-400 opacity-80 animate-pulse-glow">
+                        <p className="mt-6 text-sm font-handwriting text-rose-400 opacity-80">
                             💕 Siempre serás suficiente para mí
                         </p>
                     </div>
@@ -1134,14 +1134,14 @@
                      <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-red-200 to-rose-200 opacity-50"></div>
 
                      <div className="relative z-10 h-full flex flex-col">
-                        <div className="flex justify-between items-center mb-6 pl-4 animate-fade-in-scale">
+                        <div className="flex justify-between items-center mb-6 pl-4">
                             <span className="text-xs text-gray-400 font-mono">13 / 02 / 2026</span>
-                            <Icons.PenTool size={16} className="text-rose-400 animate-sway" />
+                            <Icons.PenTool size={16} className="text-rose-400" />
                         </div>
                         
                         <div className="pl-4 pr-2 overflow-y-auto custom-scrollbar flex-1">
-                             <h3 className="text-xl font-handwriting text-rose-800 mb-4 font-bold animate-slide-right">Querida Yammi:</h3>
-                            <p className="font-handwriting text-gray-700 text-lg leading-[28px] whitespace-pre-wrap animate-blur-reveal">
+                             <h3 className="text-xl font-handwriting text-rose-800 mb-4 font-bold">Querida Yammi:</h3>
+                            <p className="font-handwriting text-gray-700 text-lg leading-[28px] whitespace-pre-wrap">
                                 {displayedText}
                                 <span className="animate-pulse text-rose-500 font-bold ml-1 inline-block">|</span>
                             </p>
@@ -1165,11 +1165,11 @@
 
             return (
                 <div className="h-full bg-purple-50 p-6 flex flex-col relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12 animate-float-smooth">
+                    <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12">
                         <Icons.Heart size={100} className="text-purple-500" />
                     </div>
                     
-                    <h2 className="text-2xl font-handwriting text-purple-700 mb-4 text-center border-b-2 border-purple-200 pb-2 z-10 animate-slide-down">
+                    <h2 className="text-2xl font-handwriting text-purple-700 mb-4 text-center border-b-2 border-purple-200 pb-2 z-10">
                         Cosas que Amo Cuando Estoy Contigo
                     </h2>
                     
@@ -1177,14 +1177,14 @@
                         <ul className="space-y-2">
                             {things.map((thing, idx) => (
                                 <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded shadow-sm text-sm font-handwriting text-gray-700 hover:bg-purple-100 hover:scale-105 transition-all stagger-child" style={{animationDelay: `${(idx % 6) * 0.05}s`}}>
-                                    <span className="text-purple-400 font-bold min-w-[24px] animate-bounce-custom" style={{animationDelay: `${idx * 0.05}s`}}>💜</span>
+                                    <span className="text-purple-400 font-bold min-w-[24px]">💜</span>
                                     <span>{thing}</span>
                                 </li>
                             ))}
                         </ul>
                     </div>
                     
-                    <div className="text-center mt-2 text-xs text-purple-400 font-handwriting opacity-80 animate-pulse-glow">
+                    <div className="text-center mt-2 text-xs text-purple-400 font-handwriting opacity-80">
                         (Cada momento es especial contigo)
                     </div>
                 </div>
@@ -1212,11 +1212,11 @@
 
             return (
                 <div className="h-full bg-rose-50 p-6 flex flex-col relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12 animate-float-smooth">
+                    <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12">
                         <Icons.Heart size={100} className="text-rose-500" />
                     </div>
                     
-                    <h2 className="text-2xl font-handwriting text-rose-700 mb-4 text-center border-b-2 border-rose-200 pb-2 z-10 animate-slide-down">
+                    <h2 className="text-2xl font-handwriting text-rose-700 mb-4 text-center border-b-2 border-rose-200 pb-2 z-10">
                         100 Cosas que Amo de Ti
                     </h2>
                     
@@ -1224,14 +1224,14 @@
                         <ul className="space-y-2">
                             {things.map((thing, idx) => (
                                 <li key={idx} className="flex items-start gap-2 bg-white p-2 rounded shadow-sm text-sm font-handwriting text-gray-700 hover:bg-rose-100 hover:scale-105 hover:shadow-md transition-all stagger-child" style={{animationDelay: `${(idx % 6) * 0.05}s`}}>
-                                    <span className="text-rose-400 font-bold min-w-[24px] animate-color-pulse">{idx + 1}.</span>
+                                    <span className="text-rose-400 font-bold min-w-[24px]">{idx + 1}.</span>
                                     <span>{thing}</span>
                                 </li>
                             ))}
                         </ul>
                     </div>
                     
-                    <div className="text-center mt-2 text-xs text-rose-400 font-handwriting opacity-80 animate-pulse-glow">
+                    <div className="text-center mt-2 text-xs text-rose-400 font-handwriting opacity-80">
                         (Desliza para ver más)
                     </div>
                 </div>
@@ -1267,9 +1267,9 @@
               <div className="absolute top-4 right-4 animate-spin-slow opacity-20">
                 <Doodle type="spiral" className="w-16 h-16 text-rose-400" />
               </div>
-              <Icons.Clock size={40} className="text-rose-500 mb-4 animate-bounce-custom" />
-              <h2 className="text-2xl font-handwriting text-rose-700 mb-4 text-center font-bold animate-slide-up">Desde que te conocí...</h2>
-              <p className="text-[13px] leading-5 text-rose-400 font-handwriting text-center max-w-[260px] mb-4 px-2 animate-blur-reveal" style={{animationDelay: '0.2s'}}>
+              <Icons.Clock size={40} className="text-rose-500 mb-4" />
+              <h2 className="text-2xl font-handwriting text-rose-700 mb-4 text-center font-bold">Desde que te conocí...</h2>
+              <p className="text-[13px] leading-5 text-rose-400 font-handwriting text-center max-w-[260px] mb-4 px-2">
                 Aunque días atrás ya te había visto, con verte la primera vez sabía que necesitaba conocerte, te vi una vez y fuiste para mí del todo interesante, con ese rollo tan único que con solo verte esa vez me gustaste, ese día en el evento y esa foto fue porque les dije a mis amigos, quiero una foto con ella, fue muy raro pero se pudo, ¿lo recuerdas? Pues desde ese día han pasado...
               </p>
              
@@ -1321,10 +1321,10 @@
               <div className="absolute top-4 right-4 animate-spin-slow opacity-20">
                 <Doodle type="spiral" className="w-16 h-16 text-gray-300" />
               </div>
-              <Icons.Clock size={40} className={`${subClass} mb-4 animate-bounce-custom`} />
-              <h2 className={`text-2xl font-handwriting mb-3 text-center font-bold ${textClass} animate-slide-up`}>{title}</h2>
+              <Icons.Clock size={40} className={`${subClass} mb-4`} />
+              <h2 className={`text-2xl font-handwriting mb-3 text-center font-bold ${textClass}`}>{title}</h2>
               {preDescription && (
-                <p className={`text-sm font-handwriting text-center max-w-xs mb-4 ${subClass} animate-blur-reveal`} style={{animationDelay: '0.2s'}}>
+                <p className={`text-sm font-handwriting text-center max-w-xs mb-4 ${subClass}`}>
                   {preDescription}
                 </p>
               )}
@@ -1337,7 +1337,7 @@
                 ))}
               </div>
               {postDescription && (
-                <p className={`mt-4 text-sm font-handwriting text-center max-w-xs ${subClass} animate-glow`}>
+                <p className={`mt-4 text-sm font-handwriting text-center max-w-xs ${subClass}`}>
                   {postDescription}
                 </p>
               )}
