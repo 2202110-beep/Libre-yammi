@@ -1122,16 +1122,16 @@
           }
 
           return (
-            <div className={`min-h-screen ${darkMode ? 'dark-mode' : 'bg-[#f2e8cf]'} flex flex-col items-center justify-center p-4 font-sans overflow-hidden custom-cursor transition-colors duration-500`}>
+            <div className={`min-h-screen ${darkMode ? 'dark-mode' : 'bg-[#f2e8cf]'} flex flex-col items-center justify-center p-2 sm:p-4 font-sans overflow-hidden custom-cursor transition-colors duration-500`}>
               <FloatingHearts />
               
-              <div className="relative z-10 w-full max-w-4xl h-[520px] sm:h-[580px] flex items-center justify-center perspective-1500 px-2">
+              <div className="relative z-10 w-full h-[calc(100vh-32px)] sm:h-[calc(100vh-64px)] max-h-[600px] flex items-center justify-center perspective-1500">
                 {/* Sombra del libro sobre la mesa */}
-                <div className="absolute bottom-0 w-[400px] h-[40px] bg-black/10 blur-2xl rounded-full transform translate-y-16"></div>
+                <div className="hidden sm:block absolute bottom-0 w-[300px] sm:w-[400px] h-[30px] sm:h-[40px] bg-black/10 blur-2xl rounded-full transform translate-y-16"></div>
                 {/* Sombra de manos */}
                 <div className="book-hands"></div>
                 
-                <div className={`relative w-[92vw] max-w-[340px] md:max-w-[420px] h-[500px] sm:h-[550px] transform-style-3d transition-all duration-700 ease-out ${currentPage > 0 ? 'translate-x-[6%] sm:translate-x-[10%] md:translate-x-[50%]' : ''}`}>
+                <div className={`relative w-full max-w-sm sm:max-w-md lg:max-w-lg h-full aspect-video max-h-[500px] sm:max-h-[550px] transform-style-3d transition-all duration-700 ease-out ${currentPage > 0 ? 'translate-x-[8%] sm:translate-x-[12%]' : ''}`}>
                   {pages.map((page, index) => {
                     const zIndex = totalPages - index;
                     const isFlipped = index < currentPage;
@@ -1139,7 +1139,8 @@
                     return (
                       <div 
                         key={index} 
-                        className={`absolute inset-0 w-full h-full origin-left transition-all duration-800 transform-style-3d bg-white rounded-r-lg border-l-4 border-amber-900/20 paper-texture
+                        onClick={() => isCurrent && turnPage('next')}
+                        className={`absolute inset-0 w-full h-full origin-left transition-all duration-800 transform-style-3d bg-white rounded-r-lg border-l-4 border-amber-900/20 paper-texture cursor-pointer
                           ${isFlipped ? 'rotate-y-180 page-shadow-flipped' : 'rotate-y-0 page-shadow-active'}
                           ${isCurrent ? 'shadow-2xl' : ''}`}
                         style={{ 
@@ -1185,33 +1186,33 @@
                 </div>
               </div>
 
-              <div className="mt-8 z-20 flex gap-8 items-center bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-xl border-2 border-rose-100">
+              <div className="mt-4 sm:mt-8 z-20 flex gap-4 sm:gap-8 items-center bg-white/90 backdrop-blur-sm p-3 sm:p-4 rounded-full shadow-xl border-2 border-rose-100">
                 <button 
                   onClick={() => turnPage('prev')} 
                   disabled={currentPage === 0} 
-                  className={`p-3 rounded-full transition-all duration-200 ${
+                  className={`p-2 sm:p-3 rounded-full transition-all duration-200 touch-manipulation ${
                     currentPage === 0 
                       ? 'text-gray-300 cursor-not-allowed bg-gray-50' 
                       : 'bg-gradient-to-br from-rose-100 to-pink-100 text-rose-600 hover:from-rose-200 hover:to-pink-200 hover:scale-110 hover:shadow-lg active:scale-95 active:shadow-sm'
                   }`}
                   style={{ willChange: 'transform' }}
                 >
-                  <Icons.ArrowRight size={24} className="transform rotate-180" />
+                  <Icons.ArrowRight size={28} className="transform rotate-180" />
                 </button>
-                <div className="text-gray-600 text-base font-handwriting font-bold w-20 text-center">
+                <div className="text-gray-600 text-sm sm:text-base font-handwriting font-bold w-16 sm:w-20 text-center">
                   {currentPage === 0 ? 'Inicio' : `Pág ${currentPage}`}
                 </div>
                 <button 
                   onClick={() => turnPage('next')} 
                   disabled={currentPage === totalPages - 1} 
-                  className={`p-3 rounded-full transition-all duration-200 ${
+                  className={`p-2 sm:p-3 rounded-full transition-all duration-200 touch-manipulation ${
                     currentPage === totalPages - 1 
                       ? 'text-gray-300 cursor-not-allowed bg-gray-50' 
                       : 'bg-gradient-to-br from-rose-100 to-pink-100 text-rose-600 hover:from-rose-200 hover:to-pink-200 hover:scale-110 hover:shadow-lg active:scale-95 active:shadow-sm'
                   }`}
                   style={{ willChange: 'transform' }}
                 >
-                  <Icons.ArrowRight size={24} />
+                  <Icons.ArrowRight size={28} />
                 </button>
               </div>
             </div>
