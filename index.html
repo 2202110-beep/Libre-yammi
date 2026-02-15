@@ -1222,7 +1222,6 @@
           ];
 
           const pages = [
-            { component: <CoverPage onOpen={() => turnPage('next')} /> },
             { component: <TimerPage startDate={relationshipStartDate} /> },
             { component: <SpecialDateCounterPage title="Desde nuestro primer beso" startDate="2025-03-25" accent="purple" preDescription="¿Recuerdas nuestra primera salida y nuestro primer beso? Pues ya pasaron..." postDescription="Después de ese video que grabamos fui la persona más feliz, estaba emocionado, solo hablaba de eso, decidí invitarte a salir y fue la mejor idea que tuve, esa salida y luego ese beso, fue increíble y para mí es el día más importante contigo." /> },
             { component: <SpecialDateCounterPage title="El día que decidimos ser novios" startDate="2025-05-29" accent="blue" preDescription="¿Recuerdas? Fue un día increíble. La persona que miré una vez y creí inalcanzable era mi novia, y aunque cuando te lo pedí te reíste, fui bastante feliz. Aún me gusta pasar por ahí y me detengo a recordar lo que se vivió ahí en esa banca; desde ese día han pasado..." /> },
@@ -1332,10 +1331,15 @@
               {/* Contenedor de scroll vertical */}
               <div className="w-full">
                 {/* Portada */}
-                <section className="min-h-screen w-full flex items-center justify-center p-4">
+                <section className="min-h-screen w-full flex items-center justify-center p-4" id="portada">
                   <ScrollSection delay={0}>
                     <div className="w-full max-w-2xl">
-                      <CoverPage onOpen={() => {}} />
+                      <CoverPage onOpen={() => {
+                        const timerSection = document.querySelectorAll('section')[1];
+                        if (timerSection) {
+                          timerSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }} />
                     </div>
                   </ScrollSection>
                 </section>
