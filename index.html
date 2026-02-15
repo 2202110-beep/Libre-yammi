@@ -1340,23 +1340,65 @@
                   </ScrollSection>
                 </section>
 
-                {/* Todas las páginas de contenido */}
-                {pages.map((page, index) => (
-                  <section key={index} className="min-h-screen w-full flex items-center justify-center p-4 py-12">
-                    <ScrollSection delay={index * 100}>
-                      <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6">
-                        {page.component}
-                      </div>
-                    </ScrollSection>
-                  </section>
-                ))}
+                {/* Todas las páginas de contenido con imágenes intercaladas */}
+                {pages.map((page, index) => {
+                  const photoSources = [
+                    "recuerdos/animada.jpeg",
+                    "recuerdos/recuerdo-1.jpg",
+                    "recuerdos/recuerdo-2.jpg",
+                    "recuerdos/recuerdo-3.jpg",
+                    "recuerdos/recuerdo-4.jpg",
+                    "recuerdos/recuerdo-5.jpg",
+                    "recuerdos/recuerdo-6.jpg",
+                    "recuerdos/recuerdo-7.jpg",
+                    "recuerdos/recuerdo-8.jpg",
+                    "recuerdos/WhatsApp Image 2026-02-13 at 6.52.43 PM.jpeg",
+                    "recuerdos/WhatsApp Image 2026-02-14 at 11.54.14 PM.jpeg"
+                  ];
 
-                {/* Galería de fotos */}
+                  return (
+                    <React.Fragment key={index}>
+                      {/* Página de contenido */}
+                      <section className="min-h-screen w-full flex items-center justify-center p-4 py-12">
+                        <ScrollSection delay={index * 100}>
+                          <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6">
+                            {page.component}
+                          </div>
+                        </ScrollSection>
+                      </section>
+
+                      {/* Imagen intercalada */}
+                      {index < photoSources.length && (
+                        <section className="min-h-screen w-full flex items-center justify-center p-4 py-12 bg-gradient-to-br from-rose-50 to-pink-50">
+                          <ScrollSection delay={(index + 1) * 100}>
+                            <div className="w-full max-w-2xl">
+                              <div className="relative overflow-hidden rounded-xl shadow-2xl h-96 sm:h-[500px]">
+                                <img 
+                                  src={photoSources[index]}
+                                  alt={`Recuerdo ${index}`}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    e.target.src = `https://picsum.photos/seed/photo-${index}/600/500`;
+                                  }}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
+                                  <span className="text-white text-2xl animate-bounce">💖</span>
+                                </div>
+                              </div>
+                            </div>
+                          </ScrollSection>
+                        </section>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+
+                {/* Galería final de fotos restantes */}
                 <section className="min-h-screen w-full flex items-center justify-center p-4 py-12">
-                  <ScrollSection delay={(pages.length) * 100}>
+                  <ScrollSection delay={(pages.length + 1) * 100}>
                     <div className="w-full max-w-4xl">
                       <h2 className="text-4xl font-handwriting text-rose-700 mb-8 text-center font-bold">
-                        Nuestros Momentos Capturados 📸
+                        Más Momentos Bonitos 📸
                       </h2>
                       <PhotoGallery />
                     </div>
