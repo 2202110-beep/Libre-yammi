@@ -642,20 +642,25 @@
             const ref = useRef(null);
 
             useEffect(() => {
-                const observer = new IntersectionObserver(
-                    ([entry]) => {
-                        if (entry.isIntersecting) {
-                            setTimeout(() => {
-                                setIsVisible(true);
-                                observer.unobserve(ref.current);
-                            }, delay);
-                        }
-                    },
-                    { threshold: 0.1 }
-                );
+              if (typeof IntersectionObserver === 'undefined') {
+                setIsVisible(true);
+                return;
+              }
 
-                if (ref.current) observer.observe(ref.current);
-                return () => observer.disconnect();
+              const observer = new IntersectionObserver(
+                ([entry]) => {
+                  if (entry.isIntersecting) {
+                    setTimeout(() => {
+                      setIsVisible(true);
+                      observer.unobserve(ref.current);
+                    }, delay);
+                  }
+                },
+                { threshold: 0.1 }
+              );
+
+              if (ref.current) observer.observe(ref.current);
+              return () => observer.disconnect();
             }, [delay]);
 
             const effectClasses = {
@@ -1539,7 +1544,7 @@
             { component: <TimerPage startDate={relationshipStartDate} /> },
             { component: <SpecialDateCounterPage title="Desde nuestro primer beso" startDate="2025-03-25" accent="purple" preDescription="¿Recuerdas nuestra primera salida y nuestro primer beso? Pues ya pasaron..." postDescription="Después de ese video que grabamos fui la persona más feliz, estaba emocionado, solo hablaba de eso, decidí invitarte a salir y fue la mejor idea que tuve, esa salida y luego ese beso, fue increíble y para mí es el día más importante contigo." /> },
             { component: <SpecialDateCounterPage title="El día que decidimos ser novios" startDate="2025-05-29" accent="blue" preDescription="¿Recuerdas? Fue un día increíble. La persona que miré una vez y creí inalcanzable era mi novia, y aunque cuando te lo pedí te reíste, fui bastante feliz. Aún me gusta pasar por ahí y me detengo a recordar lo que se vivió ahí en esa banca; desde ese día han pasado..." /> },
-            { component: <SpecialDateCounterPage title="Ese Te Amo" startDate="2025-10-22" accent="rose" preDescription="Uno de los momentos más lindos fue ese \"Te amo\"; no sabes lo bonito que sentí y lo lindo que fue que lo hayas dicho tú. Se sintió tan genuino y tan bonito. Recuerdo que se te salió y no querías aceptar que lo dijiste, pero una vez que lo aceptaste no parabas de decirlo. Sonabas muy linda; pues ese \"Te amo\" fue hace..." /> },
+            { component: <SpecialDateCounterPage title="Ese Te Amo" startDate="2025-10-22" accent="rose" preDescription="Uno de los momentos más lindos fue ese Te amo; no sabes lo bonito que sentí y lo lindo que fue que lo hayas dicho tú. Se sintió tan genuino y tan bonito. Recuerdo que se te salió y no querías aceptar que lo dijiste, pero una vez que lo aceptaste no parabas de decirlo. Sonabas muy linda; pues ese Te amo fue hace..." /> },
             { component: <ReasonsWhyYouPage /> },
             { component: <ThingsToDoTogetherPage /> },
             { component: <ComplimentsGeneratorPage /> },
